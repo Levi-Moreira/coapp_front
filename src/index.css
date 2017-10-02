@@ -1,0 +1,115 @@
+/*-------------------------Estilos gerais---------------------------*/
+
+*{
+    box-sizing: border-box;
+}
+img{
+    max-width: 100%;
+    display: block;
+}
+
+.login{
+    background: #222222;
+
+}
+.button{
+    margin: 20px 0;
+    border-radius: 10px;
+    border: none;
+    font-size: 30px;
+    padding:10px 20px;
+    font-family: 'Roboto Slab', serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s all ease;
+    &:hover{
+        background: #ffffff;
+        color: #222222;
+    }
+}
+
+.container{
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    background: #588276;
+    margin-top: 200px;
+    padding: 60px 50px;
+    border-radius: 10px;
+    z-index: 2;
+    text-align: center;
+    color: #ffffff;
+    flex-direction: row;
+    justify-content:flex-end;
+
+    h1{
+        font-family: 'Roboto Slab', serif;
+        font-weight: 700;
+        font-size: 30px;
+        margin: 0 auto;
+        padding: 20px 0 10px 0;
+        }
+    p{
+        font-family: 'Yanone Kaffeesatz', sans-serif;
+        font-size: 20px;
+        margin: 0 auto;
+        padding-bottom: 20px;
+    }
+
+}
+
+.form-login{
+    flex: 1 1 800px;
+    justify-content: flex-start;
+    input{
+        font-family: 'Yanone Kaffeesatz', sans-serif;
+        font-size: 1em;
+        color: #ffffff;
+        width: 50%;
+        height: 50px;
+        background: rgba(255,255,255,.4);
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px 0;
+        transition: .3s all ease;
+        &:focus, &:hover{
+            border: 4px solid #222222;
+            outline: none;
+        }
+    }
+}
+
+.btn-senha{
+    font-size: 18px;
+    text-transform: none;
+    background: rgba(63,60,60,.5);
+    color: rgba(255,255,255,0.5);
+    &:hover{
+        background: rgba(63,60,60,1);
+        color: rgba(255,255,255,1);
+    }
+}
+
+.btn-entrar{
+    background: #b0c268;
+    color: #ffffff;
+    &:hover{
+        background: #222222;
+        color: #ffffff;
+    }
+}
+
+.logo{
+   z-index: 100000;
+    position: absolute;
+    top: 100px;
+    left: 45%;
+    right: 50%;
+    padding-bottom: 20px;
+}

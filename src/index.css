@@ -3,6 +3,7 @@
 *{
     box-sizing: border-box;
 }
+
 img{
     max-width: 100%;
     display: block;
@@ -12,6 +13,7 @@ img{
     background: #222222;
 
 }
+
 .button{
     margin: 20px 0;
     border-radius: 10px;
@@ -45,43 +47,45 @@ img{
     text-align: center;
     color: #ffffff;
     flex-direction: row;
-    justify-content:flex-end;
+    justify-content:center;
+}
 
-    h1{
-        font-family: 'Roboto Slab', serif;
-        font-weight: 700;
-        font-size: 30px;
-        margin: 0 auto;
-        padding: 20px 0 10px 0;
-        }
-    p{
-        font-family: 'Yanone Kaffeesatz', sans-serif;
-        font-size: 20px;
-        margin: 0 auto;
-        padding-bottom: 20px;
-    }
+h1{
+    font-family: 'Roboto Slab', serif;
+    text-align: center;
+    font-weight: 700;
+    font-size: 30px;
+    margin: 0 auto;
+    padding: 20px 0 10px 0;
+}
 
+p{
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 20px;
+    margin: 0 auto;
+    padding-bottom: 20px;
 }
 
 .form-login{
     flex: 1 1 800px;
     justify-content: flex-start;
-    input{
-        font-family: 'Yanone Kaffeesatz', sans-serif;
-        font-size: 1em;
-        color: #ffffff;
-        width: 50%;
-        height: 50px;
-        background: rgba(255,255,255,.4);
-        border: none;
-        border-radius: 10px;
-        padding: 10px;
-        margin: 10px 0;
-        transition: .3s all ease;
-        &:focus, &:hover{
-            border: 4px solid #222222;
-            outline: none;
-        }
+}
+
+input{
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 1em;
+    color: #ffffff;
+    width: 50%;
+    height: 50px;
+    background: rgba(255,255,255,.4);
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+    transition: .3s all ease;
+    &:focus, &:hover{
+        border: 4px solid #222222;
+        outline: none;
     }
 }
 
@@ -108,8 +112,6 @@ img{
 .logo{
    z-index: 100000;
     position: absolute;
-    top: 100px;
-    left: 45%;
-    right: 50%;
+    top: -100px;
     padding-bottom: 20px;
 }

@@ -69,12 +69,15 @@ class LoginForm extends React.Component{
 class LoginBox extends React.Component {
   render() {
     return (
-      <div className="container">
-        <ImageComponent/>
-        <WelcomeText/>
-        <InstructionText/>
-        <LoginForm/>
-      </div>
+
+        <div className="container">
+          <ImageComponent/>
+          <WelcomeText/>
+          <InstructionText/>
+          <LoginForm/>
+        </div>
+
+
     );
   }
 }

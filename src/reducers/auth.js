@@ -1,7 +1,10 @@
-import {createReducer} from '../utils';
-import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER} from '../constants';
-import {pushState} from 'redux-router';
+import {createReducer} from '../utils/index';
+// import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER} from '../constants';
 
+const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
+const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
+const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST';
+const LOGOUT_USER = 'LOGOUT_USER';
 
 const initialState = {
     token: null,

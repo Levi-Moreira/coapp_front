@@ -1,11 +1,10 @@
 import React  from 'react';
-import {Link} from 'react-router';
-import LoginPage from '../components/LoginPage'
+import LoginPage from '../containers/LoginPageContainer'
 
 const App = (props) => {
   return (
     <div>
-      <LoginPage/>
+      <LoginPageContainer/>
     </div>
   );
 };

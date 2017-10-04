@@ -1,11 +1,14 @@
 import { checkHttpStatus, parseJSON } from '../utils';
+import { createBrowserHistory } from 'history';
 
+const history = createBrowserHistory();
+// import { pushState } from 'redux-router';
 
-const BASE_URL = 'http://127.0.0.1:8000/api/v1/';
+const BASE_URL = 'http://cohabitat.com.br/api/v1/';
 
-const MASTER_TOKEN = 'Token ed186c5d234467b98df7b0e6cde92e4b908fe5d4'
+const MASTER_TOKEN = 'Token 3795120644e36ad156daac35a989db2dad78e154'
 
-const SIGN_IN_ENDPOINT = `${BASE_URL}/api/v1/users/sign_in`;
+const SIGN_IN_ENDPOINT = `${BASE_URL}users/sign_in`;
 
 const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
@@ -16,6 +19,7 @@ export function loginUserSuccess(token, user, coworking) {
   localStorage.setItem('token', token);
   localStorage.setItem('user', user);
   localStorage.setItem('coworking', coworking);
+  //  alert('A name was submitted: '+token);
   return {
     type: LOGIN_USER_SUCCESS,
     payload: {
@@ -57,12 +61,14 @@ export function logout() {
 export function logoutAndRedirect() {
     return (dispatch, state) => {
         dispatch(logout());
-        // dispatch(pushState(null, '/login'));
+        history.push('/home');
     }
 }
 
-export function loginUser(email, password, redirect="/") {
+export function loginUser(email, password, redirect="/home") {
+
     return function(dispatch) {
+
         dispatch(loginUserRequest());
         return fetch(SIGN_IN_ENDPOINT, {
             method: 'post',

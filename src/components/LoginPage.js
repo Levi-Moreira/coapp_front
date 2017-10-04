@@ -1,23 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './LoginPage.css';
+import LoginForm from './LoginForm'
 
 
 
-function LoginButton() {
-  return <button  className="button btn-entrar" > Entrar </button>;
-}
-
-class TextInputLogin extends React.Component{
-  render(){
-    return(
-      <div>
-        <input className="input-login" type="text" placeholder="Usuário"/>
-        <br/>
-      </div>
-    );
-  }
-}
 
 class InstructionText extends React.Component{
   render(){
@@ -41,29 +28,6 @@ class WelcomeText extends React.Component{
   }
 }
 
-
-class PasswordnputLogin extends React.Component{
-  render(){
-    return(
-      <div>
-        <input className="input-login" type="password" placeholder="Senha"/>
-        <br/>
-      </div>
-    );
-  }
-}
-
-class LoginForm extends React.Component{
-  render(){
-    return(
-      <form className="form-login">
-        <TextInputLogin/>
-        <PasswordnputLogin/>
-        <LoginButton/>
-      </form>
-    );
-  }
-}
 
 
 class LoginBox extends React.Component {

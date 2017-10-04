@@ -4,16 +4,16 @@ import { Provider } from 'react-redux' //← Bridge React and Redux
 import { createStore } from 'redux' // ← Main Redux library
 import coapp from './reducers' // ← List of Reducers we created
 //Import all components we created earlier
-import LoginPageContainer from './containers/LoginPage'
+import App from './components/App'
 
 
 let store = createStore(coapp)
 
 
 render(
- <Provider store={store}> 
+ <Provider store={store}>
  <div>
-   <LoginPageContainer />
+   <App />
  </div>
  </Provider>,
  document.getElementById('root') //<-- Render to a div w/ id "root"

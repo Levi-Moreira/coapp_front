@@ -27,6 +27,9 @@ class HomePage extends React.Component {
 
   componentDidMount(){
     document.body.style.backgroundColor = '#e0e3cc';
+    //
+    console.log(this.props.public_token);
+    // console.log(this.props.public_token);
   }
 
   render() {

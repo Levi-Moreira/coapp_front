@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import '../styles/LoginPage.css';
 import WebFont from 'webfontloader';
 import {signIn} from '../../services/api_acessor'
-
+import { PropTypes } from 'prop-types'
 
 function LoginButton() {
   return <button  className="button btn-entrar" > Entrar </button>;
@@ -40,6 +40,8 @@ class LoginForm extends React.Component{
     this.state = {username: '',password:''};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
+    this.errorCompletionHangler =  this.errorCompletionHangler.bind(this);
   }
 
   handleChange(event) {
@@ -50,6 +52,7 @@ class LoginForm extends React.Component{
   sucessCompletionHandler(data, status){
     console.log(data);
     console.log(status);
+    this.props.onSignInSucess(data.public_token,  data.coworking, data.user);
   }
 
   errorCompletionHangler(error){
@@ -118,6 +121,7 @@ class ImageComponent extends React.Component{
   }
 }
 
+LoginPage.propTypes = { onSignInSucess: PropTypes.func };
 
 // ReactDOM.render(<LoginPage/>, document.getElementById("root"));
 export default LoginPage;

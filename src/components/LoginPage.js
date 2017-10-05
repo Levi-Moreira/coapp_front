@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './LoginPage.css';
 import WebFont from 'webfontloader';
-import axios     from 'axios'
+import {signIn} from '../services/api_acessor'
+
 
 function LoginButton() {
   return <button  className="button btn-entrar" > Entrar </button>;
@@ -45,36 +46,23 @@ class LoginForm extends React.Component{
     this.setState({[event.target.name]: event.target.value});
   }
 
+
+  sucessCompletionHandler(data, status){
+    console.log(data);
+    console.log(status);
+  }
+
+  errorCompletionHangler(error){
+      console.log(error);
+  }
+
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.username);
     event.preventDefault();
-
-
-    var data = {user : {
-      username: this.state.username,
-      password: this.state.password
-    }};
-
-    var authOptions = {
-       method: 'POST',
-       url: 'http://www.cohabitat.com.br/api/v1/users/sign_in',
-       data: JSON.stringify(data),
-       headers: {
-           'Authorization': 'Token 3795120644e36ad156daac35a989db2dad78e154',
-           'Content-Type': 'application/json'
-       },
-       json: true
-     };
-
-     axios(authOptions)
-      .then(function(response){
-        console.log(response.data);
-        console.log(response.status);
-      })
-      .catch(function(error){
-        console.log(error);
-      });
-}
+    signIn(this.state.username,
+      this.state.password,
+      this.sucessCompletionHandler,
+      this.errorCompletionHangler);
+  }
 
   render(){
     return(
@@ -107,9 +95,14 @@ class LoginBox extends React.Component {
 }
 
 class LoginPage extends React.Component {
+  componentDidMount(){
+    document.body.style.backgroundColor = '#222222';
+  }
   render() {
     return (
+
           <LoginBox/>
+
     );
   }
 }
@@ -125,8 +118,6 @@ class ImageComponent extends React.Component{
   }
 }
 
-document.body.className = "login"
-// ========================================
 
 // ReactDOM.render(<LoginPage/>, document.getElementById("root"));
 export default LoginPage;

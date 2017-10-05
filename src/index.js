@@ -1,16 +1,15 @@
-import 'babel-polyfill';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
-
-const target = document.getElementById('root');
-
-
-
-
-const node = (
-    <App />
-);
+import { BrowserRouter, Route } from 'react-router-dom'
+import {App} from './components/App';
+import LoginPage from './components/LoginPage';
+import HomePage from './components/HomePage';
 
 
-ReactDOM.render(node, target);
+const rootEl = document.getElementById('root');
+ReactDOM.render((
+  <BrowserRouter>
+      <App />
+    </BrowserRouter>
+), rootEl);

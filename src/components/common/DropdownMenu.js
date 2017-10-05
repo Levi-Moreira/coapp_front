@@ -1,9 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './DropdownMenu.css';
-
-
-
+import '../styles/DropdownMenu.css';
 
 export class Dropdown extends React.Component {
 
@@ -22,8 +19,3 @@ export class Dropdown extends React.Component {
     );
   }
 }
-
-
-// ========================================
-
-// ReactDOM.render(<LoginPage/>, document.getElementById("root"));

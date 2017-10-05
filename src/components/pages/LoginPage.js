@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './LoginPage.css';
+import '../styles/LoginPage.css';
 import WebFont from 'webfontloader';
-import {signIn} from '../services/api_acessor'
+import {signIn} from '../../services/api_acessor'
 
 
 function LoginButton() {

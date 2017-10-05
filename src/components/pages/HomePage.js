@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import WebFont from 'webfontloader';
-import {signIn} from '../services/api_acessor'
-import {SlideMenu, Navigation} from './Navigation'
+import {SlideMenu, Navigation} from '../common/Navigation'
 
 
 

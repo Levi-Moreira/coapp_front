@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './Navigation.css';
+import '../styles/Navigation.css';
 import {Dropdown} from './DropdownMenu'
 
 

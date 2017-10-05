@@ -1,9 +1,7 @@
 import React  from 'react';
 import { BrowserRouter,Switch, Route } from 'react-router-dom'
-import LoginPage from '../components/LoginPage'
-import HomePage from '../components/HomePage'
-import {Fullscreen} from './Fullscreen'
-
+import LoginPage from '../pages/LoginPage'
+import HomePage from '../pages/HomePage'
 
 export class App extends React.Component{
   render(){

@@ -6,23 +6,46 @@ import {retrieveFromSession, retrieveFromStorage, removeFromSession} from '../..
 import {PRIVATE_TOKEN, COWORKING, USER} from '../../services/storage_acessor'
 import history from '../../services/history';
 import '../styles/ConfigPage.css'
+import '../styles/Modals.css'
+import {retrieveContactInfos, BASE_URL} from '../../services/api_acessor'
 
 
 class CoworkingInfoForm extends React.Component{
   constructor(props){
     super(props);
+    this.state = {coworking_name: null, coworking_site : null, coworking_cnpj:null, coworking_address:null};
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount(){
+    var coworking = retrieveFromSession(COWORKING);
+
+    if(coworking!=null){
+      this.setState({
+        coworking_name: coworking.name,
+        coworking_site: coworking.url,
+        coworking_cnpj: coworking.cnpj,
+        coworking_address : coworking.address
+      });
+    }else{
+      history.push("/")
+    }
+  }
+
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value});
   }
 
   render(){
     return(
       <form action="" className="form-1 col">
-          <input type="text" placeholder="Nome" value=""/>
+          <input type="text" name="coworking_name" placeholder="Nome" value={this.state.coworking_name} onChange={this.handleChange}/>
           <br/>
-          <input type="text" placeholder="Site" value=""/>
+          <input type="text" name="coworking_site" placeholder="Site" value={this.state.coworking_site} onChange={this.handleChange}/>
           <br/>
-          <input type="text" placeholder="CNPJ" value=""/>
+          <input type="text" name="coworking_cnpj" placeholder="CNPJ" value={this.state.coworking_cnpj} onChange={this.handleChange}/>
           <br/>
-          <input type="text" placeholder="Endereço" value=""/>
+          <input type="text" name="coworking_address" placeholder="Endereço" value={this.state.coworking_address} onChange={this.handleChange}/>
           <button className="btn-add">Salvar Alterações</button>
       </form>
     );
@@ -32,10 +55,47 @@ class Content extends React.Component{
 
   constructor(props) {
       super(props);
+      this.state = {contact_infos : null}
+      this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
+      this.errorCompletionHangler =  this.errorCompletionHangler.bind(this);
   }
+
+
+  openCreateContactModal(){
+      document.getElementById("modal-create-contact").style.display = "block";
+  }
+  sucessCompletionHandler(data, status){
+    console.log(data.contact_infos);
+    console.log(status);
+
+    this.setState({contact_infos : data.contact_infos});
+  }
+
+  errorCompletionHangler(error){
+      console.log(error);
+  }
+
+  componentDidMount(){
+      retrieveContactInfos(
+        retrieveFromSession(COWORKING).id,
+        retrieveFromSession(PRIVATE_TOKEN),
+        this.sucessCompletionHandler,
+        this.errorCompletionHangler);
+  }
+
   render() {
+
+
+    var infos = Array();
+    if(this.state.contact_infos != null){
+      infos = this.state.contact_infos;
+    }
+
     return (
-      <div className="main">
+      <div id="main">
+
+          <ModaAddContact/>
+
           <div className="wrapper">
               <h1 className="titulo">Painel Administrativo</h1>
               <CoworkingInfoForm/>
@@ -43,7 +103,7 @@ class Content extends React.Component{
                   <div className="logotipo col">
                       <h2 className="subtitulo">Logotipo</h2>
                       <p>
-                          <img src="" alt="" height="50" width="50"/>
+                          <img src={BASE_URL+retrieveFromSession(COWORKING).logo} alt="" height="50" width="50"/>
                       </p>
                       <form action="">
                           <button className="btn-small btn-cancelar">Apagar</button>
@@ -62,19 +122,23 @@ class Content extends React.Component{
                           <div className="cell top">Editor</div>
                       </div>
 
-                          <div className="row td-cadastro">
-                              <div className="cell bottom">Levi</div>
-                              <div className="cell bottom">99999999</div>
-                              <div className="cell bottom">ellcash_levi@hotmail.com</div>
+                      {infos.map(function(info, index){
+                          return (
+                            <div key={ info.id } className="row td-cadastro">
+                              <div className="cell bottom">{info.name}</div>
+                              <div className="cell bottom">{info.phone}</div>
+                              <div className="cell bottom">{info.email}</div>
                               <div className="cell bottom">
                                   <a href="#" className=""><span>&#xe905;</span></a>
                                   <a href="#" className=""><span>&#xe9ac;</span></a>
                               </div>
                           </div>
-                      <button className="btn-add">Adicionar Novo Contato</button>
+                        );
+
+                      })}
+                      <button onClick={this.openCreateContactModal} className="btn-add">Adicionar Novo Contato</button>
                   </div>
               </div>
-
           </div>
       </div>
     );
@@ -82,6 +146,47 @@ class Content extends React.Component{
 }
 
 
+class ModaAddContact extends React.Component{
+  constructor(props){
+    super(props);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+
+closeModal(){
+    document.getElementById("modal-create-contact").style.display = "none";
+}
+  render(){
+    return(
+      <div id="modal-create-contact" className="modal modal_multi">
+         <div className="modal-content">
+           <div className="modal-header">
+               <span onClick={this.closeModal} className="close close_multi">&#xea0f;</span>
+               <h2 className="subtitulo">Adicionar Contato</h2>
+           </div>
+           <div className="modal-body wrapp">
+                   <div className="desc">
+                       <form action="" class="form">
+                           <h3>Descrição:</h3>
+                           <input type="text" placeholder="Nome"/>
+                           <h3>Telefone:</h3>
+                           <input type="text" placeholder="Telefone"/>
+                           <h3>E-mail:</h3>
+                           <input type="text" placeholder="E-mail"/>
+                       </form>
+                   </div>
+
+                   <div  className="form-2">
+                      <button className="btn-grande btn-salvar">Salvar</button>
+                      <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                  </div>
+           </div>
+         </div>
+       </div>
+    );
+  }
+
+}
 
 class ConfigPage extends React.Component {
 
@@ -104,8 +209,6 @@ class ConfigPage extends React.Component {
   componentDidMount(){
     document.body.style.backgroundColor = '#e0e3cc';
 
-    // console.log(retrieveFromSession(PRIVATE_TOKEN));
-    // sessionStorage.clear()
     if(retrieveFromSession(PRIVATE_TOKEN)===null){
         history.push("/");
         return;

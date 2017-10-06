@@ -12,7 +12,7 @@ span{
 }
 
 
-.main{
+#main{
   transition:margin-left 0.5s;
   padding:20px;
   overflow:hidden;
@@ -333,4 +333,9 @@ span{
 .form-1 .btn-add:hover{
     background: #3f3c3c;
     color: #a8b966;
+}
+
+
+.modal_multi{
+  display: block;
 }

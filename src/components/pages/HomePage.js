@@ -1,17 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import WebFont from 'webfontloader';
 import {SlideMenu, Navigation} from '../common/Navigation'
-import {retrieveFromSession, retrieveFromStorage, removeFromSession} from '../../services/storage_acessor'
+import {retrieveFromSession, removeFromSession} from '../../services/storage_acessor'
 import {PRIVATE_TOKEN, COWORKING, USER} from '../../services/storage_acessor'
 import history from '../../services/history';
 
 
 class Content extends React.Component{
 
-  constructor(props) {
-      super(props);
-  }
+
   render() {
     return (
       <div id="main">

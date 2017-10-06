@@ -1,7 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import '../styles/LoginPage.css';
-import WebFont from 'webfontloader';
 import {signIn} from '../../services/api_acessor'
 import { PropTypes } from 'prop-types'
 

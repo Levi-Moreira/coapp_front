@@ -1,19 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import WebFont from 'webfontloader';
 import {SlideMenu, Navigation} from '../common/Navigation'
-import {retrieveFromSession, retrieveFromStorage, removeFromSession} from '../../services/storage_acessor'
+import {retrieveFromSession, removeFromSession} from '../../services/storage_acessor'
 import {PRIVATE_TOKEN, COWORKING, USER} from '../../services/storage_acessor'
 import history from '../../services/history';
 import '../styles/ConfigPage.css'
 import '../styles/Modals.css'
-import {retrieveContactInfos, BASE_URL} from '../../services/api_acessor'
+import {retrieveContactInfos,createNewContactInfo, BASE_URL} from '../../services/api_acessor'
 
 
 class CoworkingInfoForm extends React.Component{
   constructor(props){
     super(props);
-    this.state = {coworking_name: null, coworking_site : null, coworking_cnpj:null, coworking_address:null};
+    this.state = {coworking_name: '', coworking_site : '', coworking_cnpj:'', coworking_address:''};
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -51,6 +49,7 @@ class CoworkingInfoForm extends React.Component{
     );
   }
 }
+
 class Content extends React.Component{
 
   constructor(props) {
@@ -58,16 +57,15 @@ class Content extends React.Component{
       this.state = {contact_infos : null}
       this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
       this.errorCompletionHangler =  this.errorCompletionHangler.bind(this);
+      this.addContactInfo = this.addContactInfo.bind(this);
   }
 
 
   openCreateContactModal(){
       document.getElementById("modal-create-contact").style.display = "block";
   }
-  sucessCompletionHandler(data, status){
-    console.log(data.contact_infos);
-    console.log(status);
 
+  sucessCompletionHandler(data, status){
     this.setState({contact_infos : data.contact_infos});
   }
 
@@ -83,10 +81,16 @@ class Content extends React.Component{
         this.errorCompletionHangler);
   }
 
+  addContactInfo(info){
+      var infos = this.state.contact_infos;
+      infos.push(info);
+      this.setState({contact_infos : infos});
+  }
+
   render() {
 
 
-    var infos = Array();
+    var infos = [];
     if(this.state.contact_infos != null){
       infos = this.state.contact_infos;
     }
@@ -94,7 +98,7 @@ class Content extends React.Component{
     return (
       <div id="main">
 
-          <ModaAddContact/>
+          <ModaAddContact onFinishAdd={this.addContactInfo}/>
 
           <div className="wrapper">
               <h1 className="titulo">Painel Administrativo</h1>
@@ -129,8 +133,8 @@ class Content extends React.Component{
                               <div className="cell bottom">{info.phone}</div>
                               <div className="cell bottom">{info.email}</div>
                               <div className="cell bottom">
-                                  <a href="#" className=""><span>&#xe905;</span></a>
-                                  <a href="#" className=""><span>&#xe9ac;</span></a>
+                                  <a href="" className=""><span>&#xe905;</span></a>
+                                  <a href="" className=""><span>&#xe9ac;</span></a>
                               </div>
                           </div>
                         );
@@ -145,17 +149,45 @@ class Content extends React.Component{
   }
 }
 
-
 class ModaAddContact extends React.Component{
   constructor(props){
     super(props);
     this.closeModal = this.closeModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
+    this.errorCompletionHangler = this.errorCompletionHangler.bind(this);
+    this.state = {name: '', phone:'', email:''};
+  }
+
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value});
   }
 
 
-closeModal(){
-    document.getElementById("modal-create-contact").style.display = "none";
-}
+  sucessCompletionHandler(data, status){
+    this.closeModal();
+    this.props.onFinishAdd(data.contact_info);
+  }
+
+  errorCompletionHangler(error){
+      console.log(error);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    createNewContactInfo(
+      retrieveFromSession(COWORKING).id,
+      this.state.name,
+      this.state.phone,
+      this.state.email,
+      this.sucessCompletionHandler,
+      this.errorCompletionHangler);
+  }
+
+  closeModal(){
+      document.getElementById("modal-create-contact").style.display = "none";
+  }
   render(){
     return(
       <div id="modal-create-contact" className="modal modal_multi">
@@ -166,20 +198,19 @@ closeModal(){
            </div>
            <div className="modal-body wrapp">
                    <div className="desc">
-                       <form action="" class="form">
+                       <form onSubmit={this.handleSubmit}  className="form">
                            <h3>Descrição:</h3>
-                           <input type="text" placeholder="Nome"/>
+                           <input name="name" type="text" placeholder="Nome" onChange={this.handleChange}/>
                            <h3>Telefone:</h3>
-                           <input type="text" placeholder="Telefone"/>
+                           <input name="phone" type="text" placeholder="Telefone" onChange={this.handleChange}/>
                            <h3>E-mail:</h3>
-                           <input type="text" placeholder="E-mail"/>
+                           <input name="email" type="text" placeholder="E-mail" onChange={this.handleChange}/>
                        </form>
+                       <div className="form-2">
+                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
+                          <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                      </div>
                    </div>
-
-                   <div  className="form-2">
-                      <button className="btn-grande btn-salvar">Salvar</button>
-                      <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
-                  </div>
            </div>
          </div>
        </div>

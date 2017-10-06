@@ -33,7 +33,7 @@ export function signIn(username, password, sucessCompletionHandler, errorComplet
       });
   }
 
-  export function retrieveContactInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+export function retrieveContactInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
       var authOptions = {
          method: 'GET',
          url: API_BASE_URL+'coworkings/'+coworking_id+'/contact_infos',
@@ -53,3 +53,32 @@ export function signIn(username, password, sucessCompletionHandler, errorComplet
           errorCompletionHangler(error);
         });
     }
+
+export function createNewContactInfo(coworking_id, name, phone, email, sucessCompletionHandler, errorCompletionHangler){
+
+        var data = {contact_info : {
+          name: name,
+          phone: phone,
+          email: email,
+        }};
+
+        var authOptions = {
+           method: 'POST',
+           url: API_BASE_URL+'coworkings/'+coworking_id+'/contact_infos',
+           data: JSON.stringify(data),
+           headers: {
+               'Authorization': MASTER_TOKEN,
+               'Content-Type': 'application/json'
+           },
+           json: true
+         };
+
+
+         axios(authOptions)
+          .then(function(response){
+            sucessCompletionHandler(response.data, response.status);
+          })
+          .catch(function(error){
+            errorCompletionHangler(error);
+          });
+      }

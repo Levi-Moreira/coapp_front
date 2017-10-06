@@ -33,6 +33,10 @@ export class SlideMenu extends React.Component{
 }
 
 export class Navigation extends React.Component {
+  constructor(props) {
+      super(props);
+    }
+
 
   openSlideMenu(){
     document.getElementById("side-menu").style.width = "400px";
@@ -54,7 +58,7 @@ export class Navigation extends React.Component {
 
         <ul className="navbar-nav">
             <li><a href="#"><span>&#xe986;</span></a></li>
-            <Dropdown/>
+            <Dropdown username={this.props.username} logout={this.props.logout}/>
             <li><a href="#"><img src="https://static-nv.mattel.com/HWCarCatalog/en-us/Images/Batman_330px_tcm985-130415.png" alt="Foto do Perfil" height="50" width="50"/></a></li>
         </ul>
       </nav>

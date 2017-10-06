@@ -22,7 +22,7 @@ img{
 
 }
 
-.button{
+button{
     margin: 20px 0;
     border-radius: 10px;
     border: none;
@@ -33,10 +33,11 @@ img{
     font-weight: 700;
     cursor: pointer;
     transition: .3s all ease;
-    &:hover{
-        background: #ffffff;
-        color: #222222;
-    }
+}
+
+button:hover{
+    background: #ffffff;
+    color: #222222;
 }
 
 .container{
@@ -58,8 +59,8 @@ img{
     justify-content:center;
 }
 
-h1{
-    font-family: 'Roboto Slab', serif;
+.container h1{
+    font-family: "Open Sans",sans-serif;
     text-align: center;
     font-weight: 700;
     font-size: 30px;
@@ -67,10 +68,11 @@ h1{
     padding: 20px 0 10px 0;
 }
 
-p{
-    font-family: 'Yanone Kaffeesatz', sans-serif;
+.container p{
+    font-family: "Roboto Slab",serif;
     font-size: 20px;
     margin: 0 auto;
+    color: #ffffff;
     padding-bottom: 20px;
 }
 
@@ -91,10 +93,16 @@ input{
     padding: 10px;
     margin: 10px 0;
     transition: .3s all ease;
-    &:focus, &:hover{
-        border: 4px solid #222222;
-        outline: none;
-    }
+}
+
+input:focus{
+    border: 4px solid #222222;
+    outline: none;
+}
+
+input:hover{
+    border: 4px solid #222222;
+    outline: none;
 }
 
 .btn-senha{
@@ -102,19 +110,21 @@ input{
     text-transform: none;
     background: rgba(63,60,60,.5);
     color: rgba(255,255,255,0.5);
-    &:hover{
-        background: rgba(63,60,60,1);
-        color: rgba(255,255,255,1);
-    }
+}
+
+.btn-senha:hover{
+    background: rgba(63,60,60,1);
+    color: rgba(255,255,255,1);
 }
 
 .btn-entrar{
     background: #b0c268;
     color: #ffffff;
-    &:hover{
-        background: #222222;
-        color: #ffffff;
-    }
+}
+
+.btn-entrar:hover{
+    background: #222222;
+    color: #ffffff;
 }
 
 .logo{

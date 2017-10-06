@@ -29,7 +29,6 @@ class WelcomeText extends React.Component{
     return(
       <div>
         <h1>Bem-vindo ao Co-habitat Sistema</h1>
-        <br/>
       </div>
     )
   }

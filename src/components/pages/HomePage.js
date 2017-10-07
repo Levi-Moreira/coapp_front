@@ -43,11 +43,10 @@ class HomePage extends React.Component {
 
     history.push("/");
   }
+  
   componentDidMount(){
     document.body.style.backgroundColor = '#e0e3cc';
 
-    // console.log(retrieveFromSession(PRIVATE_TOKEN));
-    // sessionStorage.clear()
     if(retrieveFromSession(PRIVATE_TOKEN)===null){
         history.push("/");
         return;

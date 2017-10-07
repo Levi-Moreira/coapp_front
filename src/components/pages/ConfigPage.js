@@ -5,7 +5,7 @@ import {PRIVATE_TOKEN, COWORKING, USER} from '../../services/storage_acessor'
 import history from '../../services/history';
 import '../styles/ConfigPage.css'
 import '../styles/Modals.css'
-import {retrieveContactInfos,createNewContactInfo, BASE_URL} from '../../services/api_acessor'
+import {retrieveContactInfos,createNewContactInfo, editContactInfo, BASE_URL} from '../../services/api_acessor'
 
 
 class CoworkingInfoForm extends React.Component{
@@ -54,15 +54,24 @@ class Content extends React.Component{
 
   constructor(props) {
       super(props);
-      this.state = {contact_infos : null}
+      this.state = {contact_infos : null, editing_contact_info : {name:"",phone:"",id:"",email:""}}
       this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
       this.errorCompletionHangler =  this.errorCompletionHangler.bind(this);
       this.addContactInfo = this.addContactInfo.bind(this);
+      this.editContractInfo=this.editContractInfo.bind(this);
+      this.onEdit = this.onEdit.bind(this);
+      this.onDelete = this.onDelete.bind(this);
+      this.openEditModal = this.openEditModal.bind(this);
   }
 
 
   openCreateContactModal(){
       document.getElementById("modal-create-contact").style.display = "block";
+  }
+
+
+  openEditModal(){
+      document.getElementById("modal-contact-editar").style.display = "block";
   }
 
   sucessCompletionHandler(data, status){
@@ -87,9 +96,25 @@ class Content extends React.Component{
       this.setState({contact_infos : infos});
   }
 
+
+  editContractInfo(info){
+      var infos = this.state.contact_infos.filter(function(value, index, array){
+          return value.id != info.id;
+      });
+      infos.push(info);
+      this.setState({contact_infos : infos});
+    }
+
+   onEdit(info){
+      this.setState({editing_contact_info: info});
+      this.openEditModal();
+   }
+
+   onDelete(event){
+
+   }
+
   render() {
-
-
     var infos = [];
     if(this.state.contact_infos != null){
       infos = this.state.contact_infos;
@@ -99,6 +124,7 @@ class Content extends React.Component{
       <div id="main">
 
           <ModaAddContact onFinishAdd={this.addContactInfo}/>
+          <ModalEditContact onFinishEditing={this.editContractInfo} contact_info={this.state.editing_contact_info}/>
 
           <div className="wrapper">
               <h1 className="titulo">Painel Administrativo</h1>
@@ -133,13 +159,13 @@ class Content extends React.Component{
                               <div className="cell bottom">{info.phone}</div>
                               <div className="cell bottom">{info.email}</div>
                               <div className="cell bottom">
-                                  <a href="" className=""><span>&#xe905;</span></a>
-                                  <a href="" className=""><span>&#xe9ac;</span></a>
+                                  <a href="#" onClick={()=>this.onEdit(info)} className=""><span>&#xe905;</span></a>
+                                  <a href="#" onClick={this.onDelete} className=""><span>&#xe9ac;</span></a>
                               </div>
                           </div>
                         );
 
-                      })}
+                      }, this)}
                       <button onClick={this.openCreateContactModal} className="btn-add">Adicionar Novo Contato</button>
                   </div>
               </div>
@@ -181,6 +207,7 @@ class ModaAddContact extends React.Component{
       this.state.name,
       this.state.phone,
       this.state.email,
+      retrieveFromSession(PRIVATE_TOKEN),
       this.sucessCompletionHandler,
       this.errorCompletionHangler);
   }
@@ -217,6 +244,88 @@ class ModaAddContact extends React.Component{
     );
   }
 
+}
+
+class ModalEditContact extends React.Component{
+  constructor(props){
+    super(props);
+    this.closeModal = this.closeModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
+    this.errorCompletionHangler = this.errorCompletionHangler.bind(this);
+    this.state = {name: '', phone:'', email:''};
+  }
+
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value});
+  }
+
+  componentWillReceiveProps(props){
+
+    this.setState({
+      name: props.contact_info.name,
+      phone:props.contact_info.phone,
+      email:props.contact_info.email
+    });
+  }
+
+
+  sucessCompletionHandler(data, status){
+    this.closeModal();
+    this.props.onFinishEditing(data.contact_info);
+  }
+
+  errorCompletionHangler(error){
+      console.log(error);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    editContactInfo(
+      retrieveFromSession(COWORKING).id,
+      this.props.contact_info.id,
+      this.state.name,
+      this.state.phone,
+      this.state.email,
+      retrieveFromSession(PRIVATE_TOKEN),
+      this.sucessCompletionHandler,
+      this.errorCompletionHangler);
+  }
+
+  closeModal(){
+      document.getElementById("modal-contact-editar").style.display = "none";
+  }
+
+  render(){
+    return(
+      <div id="modal-contact-editar" className="modal modal_multi">
+         <div className="modal-content">
+           <div className="modal-header">
+               <span onClick={this.closeModal} className="close close_multi">&#xea0f;</span>
+               <h2 className="subtitulo">Editar Contato</h2>
+           </div>
+           <div className="modal-body wrapp">
+                   <div className="desc">
+                       <form onSubmit={this.handleSubmit}  className="form">
+                           <h3>Descrição:</h3>
+                           <input name="name" value={this.state.name} type="text" placeholder="Nome" onChange={this.handleChange}/>
+                           <h3>Telefone:</h3>
+                           <input name="phone" value={this.state.phone} type="text" placeholder="Telefone" onChange={this.handleChange}/>
+                           <h3>E-mail:</h3>
+                           <input name="email" value={this.state.email} type="text" placeholder="E-mail" onChange={this.handleChange}/>
+                       </form>
+                       <div className="form-2">
+                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
+                          <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                      </div>
+                   </div>
+           </div>
+         </div>
+       </div>
+
+    );
+  }
 }
 
 class ConfigPage extends React.Component {

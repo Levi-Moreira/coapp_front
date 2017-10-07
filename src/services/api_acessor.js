@@ -54,8 +54,8 @@ export function retrieveContactInfos(coworking_id, authentication_token, sucessC
         });
     }
 
-export function createNewContactInfo(coworking_id, name, phone, email, sucessCompletionHandler, errorCompletionHangler){
-
+export function createNewContactInfo(coworking_id, name, phone, email,authentication_token, sucessCompletionHandler, errorCompletionHangler){
+      console.log(authentication_token);
         var data = {contact_info : {
           name: name,
           phone: phone,
@@ -67,7 +67,7 @@ export function createNewContactInfo(coworking_id, name, phone, email, sucessCom
            url: API_BASE_URL+'coworkings/'+coworking_id+'/contact_infos',
            data: JSON.stringify(data),
            headers: {
-               'Authorization': MASTER_TOKEN,
+               'Authorization': 'Token '+authentication_token,
                'Content-Type': 'application/json'
            },
            json: true
@@ -82,3 +82,33 @@ export function createNewContactInfo(coworking_id, name, phone, email, sucessCom
             errorCompletionHangler(error);
           });
       }
+
+export function editContactInfo(coworking_id, contact_id, name, phone, email,authentication_token, sucessCompletionHandler, errorCompletionHangler){
+
+              var data = {contact_info : {
+                id : contact_id,
+                name: name,
+                phone: phone,
+                email: email,
+              }};
+
+              var authOptions = {
+                 method: 'PATCH',
+                 url: API_BASE_URL+'coworkings/'+coworking_id+'/contact_infos/'+contact_id,
+                 data: JSON.stringify(data),
+                 headers: {
+                     'Authorization': 'Token '+authentication_token,
+                     'Content-Type': 'application/json'
+                 },
+                 json: true
+               };
+
+
+               axios(authOptions)
+                .then(function(response){
+                  sucessCompletionHandler(response.data, response.status);
+                })
+                .catch(function(error){
+                  errorCompletionHangler(error);
+                });
+            }

@@ -4,6 +4,10 @@ import {Dropdown} from './DropdownMenu'
 
 
 export class SlideMenu extends React.Component{
+  constructor(props){
+    super(props);
+    this.closeSlideMenu = this.closeSlideMenu.bind(this);
+  }
 
   closeSlideMenu(){
       document.getElementById("side-menu").style.width = "0px";
@@ -32,6 +36,10 @@ export class SlideMenu extends React.Component{
 }
 
 export class Navigation extends React.Component {
+  constructor(props){
+    super(props);
+    this.openSlideMenu = this.openSlideMenu.bind(this);
+  }
 
   openSlideMenu(){
     document.getElementById("side-menu").style.width = "400px";
@@ -42,7 +50,7 @@ export class Navigation extends React.Component {
     return (
       <nav className="navbar">
             <span className="open-slide">
-                <a href="" onClick={this.openSlideMenu}>
+                <a href="#" onClick={this.openSlideMenu}>
                     <svg width="30" height="30">
                         <path d="M0,5 30,5" stroke="#fff" strokeWidth="5"/>
                         <path d="M0,14 30,14" stroke="#fff" strokeWidth="5"/>
@@ -60,8 +68,3 @@ export class Navigation extends React.Component {
     );
   }
 }
-
-
-// ========================================
-
-// ReactDOM.render(<LoginPage/>, document.getElementById("root"));

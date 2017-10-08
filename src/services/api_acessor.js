@@ -112,3 +112,24 @@ export function editContactInfo(coworking_id, contact_id, name, phone, email,aut
                   errorCompletionHangler(error);
                 });
             }
+
+export function deleteContactInfos(coworking_id, contact_id,  authentication_token, sucessCompletionHandler, errorCompletionHangler){
+                  var authOptions = {
+                     method: 'DELETE',
+                     url: API_BASE_URL+'coworkings/'+coworking_id+'/contact_infos/'+contact_id,
+                     headers: {
+                         'Authorization': 'Token '+ authentication_token,
+                         'Content-Type': 'application/json'
+                     },
+                     json: true
+                   };
+
+
+                   axios(authOptions)
+                    .then(function(response){
+                      sucessCompletionHandler(response.data, response.status);
+                    })
+                    .catch(function(error){
+                      errorCompletionHangler(error);
+                    });
+                }

@@ -5,7 +5,7 @@ import {PRIVATE_TOKEN, COWORKING, USER} from '../../services/storage_acessor'
 import history from '../../services/history';
 import '../styles/ConfigPage.css'
 import '../styles/Modals.css'
-import {retrieveContactInfos,createNewContactInfo, editContactInfo, BASE_URL} from '../../services/api_acessor'
+import {retrieveContactInfos,createNewContactInfo, editContactInfo, deleteContactInfos, BASE_URL} from '../../services/api_acessor'
 
 
 class CoworkingInfoForm extends React.Component{
@@ -54,14 +54,16 @@ class Content extends React.Component{
 
   constructor(props) {
       super(props);
-      this.state = {contact_infos : null, editing_contact_info : {name:"",phone:"",id:"",email:""}}
+      this.state = {contact_infos : null, editing_contact_info : {name:"",phone:"",id:"",email:""}, deleting_contact_info : {name:"",phone:"",id:"",email:""}}
       this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
       this.errorCompletionHangler =  this.errorCompletionHangler.bind(this);
       this.addContactInfo = this.addContactInfo.bind(this);
       this.editContractInfo=this.editContractInfo.bind(this);
+      this.deleteContactInfo = this.deleteContactInfo.bind(this);
       this.onEdit = this.onEdit.bind(this);
       this.onDelete = this.onDelete.bind(this);
       this.openEditModal = this.openEditModal.bind(this);
+      this.openDeleteModal = this.openDeleteModal.bind(this);
   }
 
 
@@ -72,6 +74,10 @@ class Content extends React.Component{
 
   openEditModal(){
       document.getElementById("modal-contact-editar").style.display = "block";
+  }
+
+  openDeleteModal(){
+      document.getElementById("modal-contact-delete").style.display = "block";
   }
 
   sucessCompletionHandler(data, status){
@@ -105,13 +111,21 @@ class Content extends React.Component{
       this.setState({contact_infos : infos});
     }
 
+    deleteContactInfo(info){
+        var infos = this.state.contact_infos.filter(function(value, index, array){
+            return value.id != info.id;
+        });
+        this.setState({contact_infos : infos});
+      }
+
    onEdit(info){
       this.setState({editing_contact_info: info});
       this.openEditModal();
    }
 
-   onDelete(event){
-
+   onDelete(info){
+     this.setState({deleting_contact_info: info});
+     this.openDeleteModal();
    }
 
   render() {
@@ -125,7 +139,7 @@ class Content extends React.Component{
 
           <ModaAddContact onFinishAdd={this.addContactInfo}/>
           <ModalEditContact onFinishEditing={this.editContractInfo} contact_info={this.state.editing_contact_info}/>
-
+          <ModalDeleteConfirm onFinishDeleting={this.deleteContactInfo} contact_info={this.state.deleting_contact_info}/>
           <div className="wrapper">
               <h1 className="titulo">Painel Administrativo</h1>
               <CoworkingInfoForm/>
@@ -160,7 +174,7 @@ class Content extends React.Component{
                               <div className="cell bottom">{info.email}</div>
                               <div className="cell bottom">
                                   <a href="#" onClick={()=>this.onEdit(info)} className=""><span>&#xe905;</span></a>
-                                  <a href="#" onClick={this.onDelete} className=""><span>&#xe9ac;</span></a>
+                                  <a href="#" onClick={()=>this.onDelete(info)}  className=""><span>&#xe9ac;</span></a>
                               </div>
                           </div>
                         );
@@ -328,6 +342,71 @@ class ModalEditContact extends React.Component{
   }
 }
 
+class ModalDeleteConfirm extends React.Component{
+  constructor(props){
+    super(props);
+    this.closeModal = this.closeModal.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
+    this.errorCompletionHangler = this.errorCompletionHangler.bind(this);
+    this.state = {id: '', name: '', phone:'', email:''};
+  }
+
+  componentWillReceiveProps(props){
+
+    this.setState({
+      id: props.contact_info.id,
+      name: props.contact_info.name,
+      phone:props.contact_info.phone,
+      email:props.contact_info.email
+    });
+  }
+
+
+  sucessCompletionHandler(data, status){
+    this.closeModal();
+    this.props.onFinishDeleting(this.props.contact_info);
+  }
+
+  errorCompletionHangler(error){
+      console.log(error);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    deleteContactInfos(
+      retrieveFromSession(COWORKING).id,
+      this.state.id,
+      retrieveFromSession(PRIVATE_TOKEN),
+      this.sucessCompletionHandler,
+      this.errorCompletionHangler);
+  }
+
+
+  closeModal(){
+      document.getElementById("modal-contact-delete").style.display = "none";
+  }
+
+  render(){
+    return(
+        <div id="modal-contact-delete" className="modal modal_multi excluir">
+            <div className="modal-content">
+              <div className="modal-header">
+                  <span onClick={this.closeModal} className="close close_multi">&#xea0f;</span>
+                  <h2 className="subtitulo">Excluir</h2>
+              </div>
+              <div className="modal-body wrapp">
+                      <p>Tem certeza que deseja excluir esse contato?</p>
+                      <form action="" className="form-2">
+                        <button  onClick={this.handleSubmit} className="btn-grande btn-salvar">Confirmar</button>
+                        <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                     </form>
+              </div>
+            </div>
+        </div>
+    );
+  }
+}
 class ConfigPage extends React.Component {
 
 

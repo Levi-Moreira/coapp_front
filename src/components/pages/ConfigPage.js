@@ -253,8 +253,8 @@ class ConfigPage extends React.Component {
   render() {
     return (
       <div>
-          <Content first_name={this.state.user_first_name}/>
           <Navigation username={this.state.user_first_name} logout={this.logout}/>
+          <Content first_name={this.state.user_first_name}/>
           <SlideMenu/>
       </div>
     );

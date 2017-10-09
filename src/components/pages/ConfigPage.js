@@ -257,7 +257,6 @@ class ModaAddContact extends React.Component{
        </div>
     );
   }
-
 }
 
 class ModalEditContact extends React.Component{

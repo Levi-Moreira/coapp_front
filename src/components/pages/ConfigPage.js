@@ -216,7 +216,6 @@ class ModaAddContact extends React.Component{
        </div>
     );
   }
-
 }
 
 class ConfigPage extends React.Component {

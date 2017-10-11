@@ -6,6 +6,8 @@ import { PropTypes } from 'prop-types'
 import {placeInLocalSession} from '../../services/storage_acessor'
 import {PRIVATE_TOKEN, COWORKING, USER} from '../../services/storage_acessor'
 import history from '../../services/history';
+
+
 function LoginButton() {
   return <button  className="button btn-entrar" > Entrar </button>;
 }

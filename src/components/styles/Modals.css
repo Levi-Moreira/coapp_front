@@ -74,7 +74,13 @@
 
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+    padding: 2px 16px;
+}
+.modal-body p{
+    margin: 0 auto;
+    color: white;
+}
 
 .modal-footer {
     padding: 2px 16px;
@@ -135,10 +141,5 @@
     }
     .exp{
         margin-top: 10px;
-    }
-}
-.excluir{
-    p{
-
     }
 }

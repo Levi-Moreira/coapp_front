@@ -133,3 +133,160 @@ export function deleteContactInfos(coworking_id, contact_id,  authentication_tok
                       errorCompletionHangler(error);
                     });
                 }
+
+export function retrieveResourcesInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+                  var authOptions = {
+                     method: 'GET',
+                     url: API_BASE_URL+'coworkings/'+coworking_id+'/resources',
+                     headers: {
+                         'Authorization': 'Token '+ authentication_token,
+                         'Content-Type': 'application/json'
+                     },
+                     json: true
+                   };
+            
+            
+                   axios(authOptions)
+                    .then(function(response){
+                      sucessCompletionHandler(response.data, response.status);
+                    })
+                    .catch(function(error){
+                      errorCompletionHangler(error);
+                    });
+                }
+
+export function createNewResourcesInfo(coworking_id, name, description, price,authentication_token, sucessCompletionHandler, errorCompletionHangler){
+                  console.log(authentication_token);
+                    var data = {resource : {
+                      name: name,
+                      description: description,
+                      price: price,
+                    }};
+            
+                    var authOptions = {
+                       method: 'POST',
+                       url: API_BASE_URL+'coworkings/'+coworking_id+'/resources',
+                       data: JSON.stringify(data),
+                       headers: {
+                           'Authorization': 'Token '+authentication_token,
+                           'Content-Type': 'application/json'
+                       },
+                       json: true
+                     };
+            
+            
+                     axios(authOptions)
+                      .then(function(response){
+                        sucessCompletionHandler(response.data, response.status);
+                      })
+                      .catch(function(error){
+                        errorCompletionHangler(error);
+                      });
+                  }
+            
+
+export function editResourcesInfo(coworking_id, resource_id, name, description, price, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+                    
+                var data = {resource : {
+                    id : resource_id,
+                    name: name,
+                    description: description,
+                    price: price,
+                    }};
+                    
+                var authOptions = {
+                    method: 'PATCH',
+                    url: API_BASE_URL+'coworkings/'+coworking_id+'/resources/'+resource_id,
+                    data: JSON.stringify(data),
+                    headers: {
+                      'Authorization': 'Token '+authentication_token,
+                      'Content-Type': 'application/json'
+                    },
+                    json: true
+                    };
+                    
+                    
+                axios(authOptions)
+                .then(function(response){
+                sucessCompletionHandler(response.data, response.status);
+                })
+                .catch(function(error){
+                errorCompletionHangler(error);
+                 });
+              }
+                    
+
+export function deleteResourcesInfos(coworking_id, resource_id,  authentication_token, sucessCompletionHandler, errorCompletionHangler){
+              var authOptions = {
+                  method: 'DELETE',
+                  url: API_BASE_URL+'coworkings/'+coworking_id+'/resources/'+ resource_id,
+                  headers: {
+                      'Authorization': 'Token '+ authentication_token,
+                      'Content-Type': 'application/json'
+                  },
+                  json: true
+                };
+
+              axios(authOptions)
+              .then(function(response){
+                sucessCompletionHandler(response.data, response.status);
+              })
+              .catch(function(error){
+                errorCompletionHangler(error);
+                });
+            }
+
+
+export function retrieveRoomsInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+              var authOptions = {
+                 method: 'GET',
+                 url: API_BASE_URL+'coworkings/'+coworking_id+'/rooms',
+                 headers: {
+                     'Authorization': 'Token '+ authentication_token,
+                     'Content-Type': 'application/json'
+                 },
+                 json: true
+               };
+        
+        
+               axios(authOptions)
+                .then(function(response){
+                  sucessCompletionHandler(response.data, response.status);
+                })
+                .catch(function(error){
+                  errorCompletionHangler(error);
+                });
+            }
+
+export function createNewRoomsInfo(coworking_id, name, description, price_hour, price_month, type, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+              console.log(authentication_token);
+                var data = {room : {
+                  name: name,
+                  description: description,
+                  price_hour: price_hour,
+                  price_month: price_month,
+                  type: type
+                }};
+        
+                var authOptions = {
+                   method: 'POST',
+                   url: API_BASE_URL+'coworkings/'+coworking_id+'/rooms',
+                   data: JSON.stringify(data),
+                   headers: {
+                       'Authorization': 'Token '+authentication_token,
+                       'Content-Type': 'application/json'
+                   },
+                   json: true
+                 };
+        
+        
+                 axios(authOptions)
+                  .then(function(response){
+                    sucessCompletionHandler(response.data, response.status);
+                  })
+                  .catch(function(error){
+                    errorCompletionHangler(error);
+                  });
+              }
+
+

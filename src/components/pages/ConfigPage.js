@@ -37,12 +37,13 @@ class CoworkingInfoForm extends React.Component{
   render(){
     return(
       <form action="" className="form-1 col">
-          <input type="text" name="coworking_name" placeholder="Nome" value={this.state.coworking_name} onChange={this.handleChange}/>
-          <br/>
-          <input type="text" name="coworking_site" placeholder="Site" value={this.state.coworking_site} onChange={this.handleChange}/>
-          <br/>
-          <input type="text" name="coworking_cnpj" placeholder="CNPJ" value={this.state.coworking_cnpj} onChange={this.handleChange}/>
-          <br/>
+          <label>Nome:</label> <br/>
+          <input type="text" name="coworking_name" placeholder="Nome" value={this.state.coworking_name} onChange={this.handleChange}/><br/>
+          <label>Site:</label> <br/>
+          <input type="text" name="coworking_site" placeholder="Site" value={this.state.coworking_site} onChange={this.handleChange}/><br/>
+          <label>CNPJ:</label> <br/>
+          <input type="text" name="coworking_cnpj" placeholder="CNPJ" value={this.state.coworking_cnpj} onChange={this.handleChange}/><br/>
+          <label>Endereço:</label> <br/>
           <input type="text" name="coworking_address" placeholder="Endereço" value={this.state.coworking_address} onChange={this.handleChange}/>
           <button className="btn-add">Salvar Alterações</button>
       </form>
@@ -147,7 +148,7 @@ class Content extends React.Component{
                   <div className="logotipo col">
                       <h2 className="subtitulo">Logotipo</h2>
                       <p>
-                          <img src={BASE_URL+retrieveFromSession(COWORKING).logo} alt="" height="50" width="50"/>
+                          <img src={BASE_URL+retrieveFromSession(COWORKING).logo} alt="Logo Coworking" height="50" width="50"/>
                       </p>
                       <form action="">
                           <button className="btn-small btn-cancelar">Apagar</button>
@@ -275,7 +276,6 @@ class ModalEditContact extends React.Component{
   }
 
   componentWillReceiveProps(props){
-
     this.setState({
       name: props.contact_info.name,
       phone:props.contact_info.phone,

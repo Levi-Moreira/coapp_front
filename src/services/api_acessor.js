@@ -265,7 +265,7 @@ export function createNewRoomsInfo(coworking_id, name, description, price_hour, 
                   description: description,
                   price_hour: price_hour,
                   price_month: price_month,
-                  type: type
+                  type: type,
                 }};
         
                 var authOptions = {
@@ -289,4 +289,75 @@ export function createNewRoomsInfo(coworking_id, name, description, price_hour, 
                   });
               }
 
+export function editRoomsInfo(coworking_id, room_id, name, description, price_hour, price_month, type, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+            
+            var data = {room : {
+                id : room_id,
+                name: name,
+                description: description,
+                price_hour: price_hour,
+                price_month: price_month,
+                type: type
+            }};
+              
+            var authOptions = {
+                method: 'PATCH',
+                url: API_BASE_URL+'coworkings/'+coworking_id+'/rooms/'+room_id,
+                data: JSON.stringify(data),
+                headers: {
+                  'Authorization': 'Token '+authentication_token,
+                  'Content-Type': 'application/json'
+                },
+                json: true
+            };
+                       
+            axios(authOptions)
+            .then(function(response){
+               sucessCompletionHandler(response.data, response.status);
+              })
+            .catch(function(error){
+               errorCompletionHangler(error);
+              });
+            }
 
+export function deleteRoomsInfos(coworking_id, room_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+              var authOptions = {
+                 method: 'DELETE',
+                 url: API_BASE_URL+'coworkings/'+coworking_id+'/rooms/'+room_id,
+                 headers: {
+                     'Authorization': 'Token '+ authentication_token,
+                     'Content-Type': 'application/json'
+                 },
+                 json: true
+               };
+
+
+               axios(authOptions)
+                .then(function(response){
+                  sucessCompletionHandler(response.data, response.status);
+                })
+                .catch(function(error){
+                  errorCompletionHangler(error);
+                });
+            }
+
+export function retrieveRoomsTypes(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler) {
+            var authOptions = {
+              method: 'GET',
+              url: API_BASE_URL+'coworkings/'+coworking_id+'/rooms_type',
+              headers: {
+                  'Authorization': 'Token '+ authentication_token,
+                  'Content-Type': 'application/json'
+              },
+              json: true
+            };
+
+
+            axios(authOptions)
+            .then(function(response){
+              sucessCompletionHandler(response.data, response.status);
+            })
+            .catch(function(error){
+              errorCompletionHangler(error);
+            });
+          }

@@ -20,7 +20,7 @@ export class Dropdown extends React.Component {
   render() {
     return (
       <div className="dropdown">
-          <li><a href="" onClick={this.openDropdown} className="dropbtn">{this.props.username}<span>&#xf107;</span></a></li>
+          <li><a href="#" onClick={this.openDropdown} className="dropbtn">{this.props.username}<span>&#xf107;</span></a></li>
           <div id="myDropdown" className="dropdown-content">
               <a href="" onClick={this.logout}>Sair</a>
           </div>

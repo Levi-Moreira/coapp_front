@@ -196,8 +196,9 @@ class ModalAddResources extends React.Component{
                            <input name="price" type="text" placeholder="Preço" onChange={this.handleChange}/>
                        </form>
                        <div className="form-2">
-                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
                           <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
+                          
                       </div>
                    </div>
            </div>
@@ -277,8 +278,9 @@ class ModalEditResources extends React.Component{
                            <input name="price" value={this.state.price} type="text" placeholder="Preço" onChange={this.handleChange}/>
                        </form>
                        <div className="form-2">
-                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
                           <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
+                          
                       </div>
                    </div>
            </div>
@@ -342,10 +344,11 @@ class ModalDeleteConfirm extends React.Component{
                   <h2 className="subtitulo">Excluir</h2>
               </div>
               <div className="modal-body wrapp">
-                      <p>Tem certeza que deseja excluir esse contato?</p>
+                      <p>Tem certeza que deseja excluir esse recurso?</p>
                       <form action="" className="form-2">
-                        <button  onClick={this.handleSubmit} className="btn-grande btn-salvar">Confirmar</button>
                         <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                        <button  onClick={this.handleSubmit} className="btn-grande btn-salvar">Confirmar</button>
+                        
                      </form>
               </div>
             </div>

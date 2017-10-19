@@ -5,6 +5,8 @@ const MASTER_TOKEN = 'Token 3795120644e36ad156daac35a989db2dad78e154';
 export const BASE_URL = 'http://www.cohabitat.com.br'
 const API_BASE_URL = 'http://www.cohabitat.com.br/api/v1/';
 
+//Login function from LoginPage
+
 export function signIn(username, password, sucessCompletionHandler, errorCompletionHangler){
 
     var data = {user : {
@@ -32,6 +34,7 @@ export function signIn(username, password, sucessCompletionHandler, errorComplet
         errorCompletionHangler(error);
       });
   }
+//Contact functions from ConfigPage
 
 export function retrieveContactInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
       var authOptions = {
@@ -133,6 +136,8 @@ export function deleteContactInfos(coworking_id, contact_id,  authentication_tok
                       errorCompletionHangler(error);
                     });
                 }
+
+//Resources functions from ResourcesPage
 
 export function retrieveResourcesInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
                   var authOptions = {
@@ -236,6 +241,7 @@ export function deleteResourcesInfos(coworking_id, resource_id,  authentication_
                 });
             }
 
+//Rooms functions from RoomsPage
 
 export function retrieveRoomsInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
               var authOptions = {
@@ -361,3 +367,131 @@ export function retrieveRoomsTypes(coworking_id, authentication_token, sucessCom
               errorCompletionHangler(error);
             });
           }
+
+//Itens functions from ItemsPage
+
+
+export function retrieveItemsInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+  var authOptions = {
+     method: 'GET',
+     url: API_BASE_URL+'coworkings/'+coworking_id+'/items',
+     headers: {
+         'Authorization': 'Token '+ authentication_token,
+         'Content-Type': 'application/json'
+     },
+     json: true
+   };
+
+
+   axios(authOptions)
+    .then(function(response){
+      sucessCompletionHandler(response.data, response.status);
+    })
+    .catch(function(error){
+      errorCompletionHangler(error);
+    });}
+
+export function createNewItemsInfo(coworking_id, name, price, unity, description, type, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+  console.log(authentication_token);
+    var data = {item : {
+      name: name,
+      price: price,
+      unity: unity,
+      description: description,
+      type: type,
+    }};
+
+    var authOptions = {
+       method: 'POST',
+       url: API_BASE_URL+'coworkings/'+coworking_id+'/items',
+       data: JSON.stringify(data),
+       headers: {
+           'Authorization': 'Token '+authentication_token,
+           'Content-Type': 'application/json'
+       },
+       json: true
+     };
+
+
+     axios(authOptions)
+      .then(function(response){
+        sucessCompletionHandler(response.data, response.status);
+      })
+      .catch(function(error){
+        errorCompletionHangler(error);
+      });
+  }
+
+export function editItemsInfo(coworking_id, item_id, name, price, unity, description, type, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+
+          var data = {item : {
+            id : item_id,
+            name: name,
+            price: price,
+            unity: unity,
+            description: description,
+            type: type,
+          }};
+
+          var authOptions = {
+             method: 'PATCH',
+             url: API_BASE_URL+'coworkings/'+coworking_id+'/items/'+item_id,
+             data: JSON.stringify(data),
+             headers: {
+                 'Authorization': 'Token '+authentication_token,
+                 'Content-Type': 'application/json'
+             },
+             json: true
+           };
+
+
+           axios(authOptions)
+            .then(function(response){
+              sucessCompletionHandler(response.data, response.status);
+            })
+            .catch(function(error){
+              errorCompletionHangler(error);
+            });
+        }
+
+export function deleteItemsInfos(coworking_id, item_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+              var authOptions = {
+                 method: 'DELETE',
+                 url: API_BASE_URL+'coworkings/'+coworking_id+'/items/'+item_id,
+                 headers: {
+                     'Authorization': 'Token '+ authentication_token,
+                     'Content-Type': 'application/json'
+                 },
+                 json: true
+               };
+
+
+               axios(authOptions)
+                .then(function(response){
+                  sucessCompletionHandler(response.data, response.status);
+                })
+                .catch(function(error){
+                  errorCompletionHangler(error);
+                });
+            }
+export function retrieveItemsTypes(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+  var authOptions = {
+     method: 'GET',
+     url: API_BASE_URL+'coworkings/'+coworking_id+'/items_types',
+     headers: {
+         'Authorization': 'Token '+ authentication_token,
+         'Content-Type': 'application/json'
+     },
+     json: true
+   };
+
+
+   axios(authOptions)
+    .then(function(response){
+      sucessCompletionHandler(response.data, response.status);
+    })
+    .catch(function(error){
+      errorCompletionHangler(error);
+    });}
+
+//Itens functions from PlansPage

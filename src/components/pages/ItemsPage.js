@@ -6,18 +6,19 @@ import history from '../../services/history';
 import '../styles/ResourcesPage.css'
 import '../styles/ConfigPage.css'
 import '../styles/Modals.css'
-import {retrieveRoomsInfos, createNewRoomsInfo, editRoomsInfo, deleteRoomsInfos, retrieveRoomsTypes, BASE_URL} from '../../services/api_acessor'
+import {retrieveItemsInfos,createNewItemsInfo, editItemsInfo, deleteItemsInfos, retrieveItemsTypes, BASE_URL} from '../../services/api_acessor'
+
 
 class Content extends React.Component{
 
   constructor(props) {
       super(props);
-      this.state = {rooms_infos : null,rooms_types : null, editing_rooms_info : {name:"", id:"", description:"", price_hour:"", price_month:"", type:""}, deleting_rooms_info : {name:"", id:"", description:"", price_hour:"", price_month:"", type:""}}
+      this.state = {items_infos : null, editing_items_info : { name:"", id:"", price:"", unity:"", description:"", type:"" }, deleting_items_info : { name:"", id:"", price:"", unity:"", description:"", type:"" }}
       this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
       this.errorCompletionHangler =  this.errorCompletionHangler.bind(this);
-      this.addRoomsInfo = this.addRoomsInfo.bind(this);
-      this.editRoomsInfo=this.editRoomsInfo.bind(this);
-      this.deleteRoomsInfo = this.deleteRoomsInfo.bind(this);
+      this.addItemsInfo = this.addItemsInfo.bind(this);
+      this.editItemsInfo=this.editItemsInfo.bind(this);
+      this.deleteItemsInfo = this.deleteItemsInfo.bind(this);
       this.onEdit = this.onEdit.bind(this);
       this.onDelete = this.onDelete.bind(this);
       this.openEditModal = this.openEditModal.bind(this);
@@ -25,23 +26,21 @@ class Content extends React.Component{
   }
 
 
-  openCreateRoomsModal(){
-      document.getElementById("modal-create-rooms").style.display = "block";
+  openCreateItemsModal(){
+      document.getElementById("modal-create-items").style.display = "block";
   }
 
 
   openEditModal(){
-      document.getElementById("modal-rooms-editar").style.display = "block";
+      document.getElementById("modal-items-editar").style.display = "block";
   }
 
   openDeleteModal(){
-      document.getElementById("modal-rooms-delete").style.display = "block";
+      document.getElementById("modal-items-delete").style.display = "block";
   }
 
   sucessCompletionHandler(data, status){
-    this.setState({rooms_infos : data.rooms,
-                  room_types: data.room_types,
-    });
+    this.setState({items_infos : data.items});
   }
 
   errorCompletionHangler(error){
@@ -49,70 +48,69 @@ class Content extends React.Component{
   }
 
   componentDidMount(){
-      retrieveRoomsInfos(
+      retrieveItemsInfos(
         retrieveFromSession(COWORKING).id,
         retrieveFromSession(PRIVATE_TOKEN),
         this.sucessCompletionHandler,
         this.errorCompletionHangler);
   }
 
-  addRoomsInfo(info){
-      var infos = this.state.rooms_infos;
+  addItemsInfo(info){
+      var infos = this.state.items_infos;
       infos.push(info);
-      this.setState({rooms_infos : infos});
+      this.setState({items_infos : infos});
   }
 
 
-  editRoomsInfo(info){
-      var infos = this.state.rooms_infos.filter(function(value, index, array){
+  editItemsInfo(info){
+      var infos = this.state.items_infos.filter(function(value, index, array){
           return value.id != info.id;
       });
       infos.push(info);
-      this.setState({rooms_infos : infos});
+      this.setState({items_infos : infos});
     }
 
-    deleteRoomsInfo(info){
-        var infos = this.state.rooms_infos.filter(function(value, index, array){
+  deleteItemsInfo(info){
+        var infos = this.state.items_infos.filter(function(value, index, array){
             return value.id != info.id;
         });
-        this.setState({rooms_infos : infos});
+        this.setState({items_infos : infos});
       }
-  
-    
+
    onEdit(info){
-      this.setState({editing_rooms_info: info});
+      this.setState({editing_items_info: info});
       this.openEditModal();
    }
 
    onDelete(info){
-     this.setState({deleting_rooms_info: info});
+     this.setState({deleting_items_info: info});
      this.openDeleteModal();
    }
 
   render() {
     var infos = [];
-    if(this.state.rooms_infos !== null || this.state.rooms_types !== null){
-      infos = this.state.rooms_infos;
+    if(this.state.items_infos != null){
+      infos = this.state.items_infos;
     }
-    
 
     return (
       <div id="main">
 
-          <ModalAddRooms onFinishAdd={this.addRoomsInfo}/>
-          <ModalEditRooms onFinishEditing={this.editRoomsInfo} room={this.state.editing_rooms_info}/>
-          <ModalDeleteConfirm onFinishDeleting={this.deleteRoomsInfo} room={this.state.deleting_rooms_info}/>
+          <ModalAddItems onFinishAdd={this.addItemsInfo}/>
+          <ModalEditItems onFinishEditing={this.editItemsInfo} item={this.state.editing_items_info}/>
+          <ModalDeleteConfirm onFinishDeleting={this.deleteItemsInfo} item={this.state.deleting_items_info}/>
           <div className="wrapper">
               <h1 className="titulo">Painel Administrativo</h1>
-              
+        
+
               <div className="contato cadastro">
-                  <h2 className="subtitulo">Informações de Salas</h2>
+                  <h2 className="subtitulo">Informações de Itens</h2>
                   <div className="table">
                       <div className="th-cadastro">
                           <div className="cell top">Nome</div>
+                          <div className="cell top">Preço</div>
+                          <div className="cell top">Unidade</div>
                           <div className="cell top">Descrição</div>
-                          <div className="cell top">Preço(hora)</div>
-                          <div className="cell top">Preço(mês)</div>
                           <div className="cell top">Tipo</div>
                           <div className="cell top">Editor</div>
                       </div>
@@ -121,9 +119,9 @@ class Content extends React.Component{
                           return (
                             <div key={ info.id } className="row td-cadastro">
                               <div className="cell bottom">{info.name}</div>
+                              <div className="cell bottom">{info.price}</div>
+                              <div className="cell bottom">{info.unity}</div>
                               <div className="cell bottom">{info.description}</div>
-                              <div className="cell bottom">{info.price_hour}</div>
-                              <div className="cell bottom">{info.price_month}</div>
                               <div className="cell bottom">{info.type}</div>
                               <div className="cell bottom">
                                   <a href="#" onClick={()=>this.onEdit(info)} className=""><span>&#xe905;</span></a>
@@ -133,7 +131,7 @@ class Content extends React.Component{
                         );
 
                       }, this)}
-                      <button onClick={this.openCreateRoomsModal} className="btn-add">Adicionar Nova Sala</button>
+                      <button onClick={this.openCreateItemsModal} className="btn-add">Adicionar Novo Item</button>
                   </div>
               </div>
           </div>
@@ -142,7 +140,7 @@ class Content extends React.Component{
   }
 }
 
-class ModalAddRooms extends React.Component{
+class ModalAddItems extends React.Component{
   constructor(props){
     super(props);
     this.closeModal = this.closeModal.bind(this);
@@ -150,19 +148,18 @@ class ModalAddRooms extends React.Component{
     this.handleChange = this.handleChange.bind(this);
     this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
     this.errorCompletionHangler = this.errorCompletionHangler.bind(this);
-    this.state = {name: '', description:'', price_hour:'', price_month:'', type:''};
+    this.state = { name:'', price:'', unity:'', description:'', type:'' };
   }
 
   handleChange(event) {
     console.log(this.state);
     this.setState({[event.target.name]: event.target.value});
-    
   }
 
 
   sucessCompletionHandler(data, status){
     this.closeModal();
-    this.props.onFinishAdd(data.room);
+    this.props.onFinishAdd(data.item);
   }
 
   errorCompletionHangler(error){
@@ -171,52 +168,51 @@ class ModalAddRooms extends React.Component{
 
   handleSubmit(event) {
     event.preventDefault();
-    createNewRoomsInfo(
+    createNewItemsInfo(
       retrieveFromSession(COWORKING).id,
       this.state.name,
+      this.state.price,
+      this.state.unity,
       this.state.description,
-      this.state.price_hour,
-      this.state.price_month,
       this.state.type,
       retrieveFromSession(PRIVATE_TOKEN),
       this.sucessCompletionHandler,
       this.errorCompletionHangler);
   }
+  
 
   closeModal(){
-      document.getElementById("modal-create-rooms").style.display = "none";
+      document.getElementById("modal-create-items").style.display = "none";
   }
   render(){
     return(
-      <div id="modal-create-rooms" className="modal modal_multi">
+      <div id="modal-create-items" className="modal modal_multi">
          <div className="modal-content">
            <div className="modal-header">
                <span onClick={this.closeModal} className="close close_multi">&#xea0f;</span>
-               <h2 className="subtitulo">Adicionar Sala</h2>
+               <h2 className="subtitulo">Adicionar Item</h2>
            </div>
            <div className="modal-body wrapp">
                    <div className="desc">
-                       <form onSubmit={this.handleSubmit} className="form">
-                         
+                       <form onSubmit={this.handleSubmit}  className="form">
                            <h3>Nome:</h3>
                            <input name="name" type="text" placeholder="Nome" onChange={this.handleChange}/>
+                           <h3>Preço:</h3>
+                           <input name="price" type="text" placeholder="Preço" onChange={this.handleChange}/>
+                           <h3>Unidade:</h3>
+                           <input name="unity" type="text" placeholder="Unidade" onChange={this.handleChange}/>
                            <h3>Descrição:</h3>
                            <input name="description" type="text" placeholder="Descrição" onChange={this.handleChange}/>
-                           <h3>Preço(hora):</h3>
-                           <input name="price_hour" type="text" placeholder="Preço(hora)" onChange={this.handleChange}/>
-                           <h3>Preço(mês):</h3>
-                           <input name="price_month" type="text" placeholder="Preço(mês)" onChange={this.handleChange}/>
                            <h3>Tipo:</h3>
-                           <input name="type" type="text" placeholder="Preço(mês)" onChange={this.handleChange}/>                          
+                           
                            <div className="styled-select blue semi-square">
                              
                             <select name="type" onChange={this.handleChange}>
-                              <option value='1' name='type'>Exclusivo</option>
-                              <option value='2' name='type'>Compartilhado</option>
+                              <option value='1' name='type'>Consumivel</option>
+                              <option value='2' name='type'>Serviço</option>
                             </select>
                           </div>    
                        </form>
-
                        <div className="form-2">
                           <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
                           <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
@@ -230,7 +226,7 @@ class ModalAddRooms extends React.Component{
   }
 }
 
-class ModalEditRooms extends React.Component{
+class ModalEditItems extends React.Component{
   constructor(props){
     super(props);
     this.closeModal = this.closeModal.bind(this);
@@ -238,28 +234,27 @@ class ModalEditRooms extends React.Component{
     this.handleChange = this.handleChange.bind(this);
     this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
     this.errorCompletionHangler = this.errorCompletionHangler.bind(this);
-    this.state = {name: '', description:'', price_hour:'', price_month:'', type:''};
+    this.state = { name:'', price:'', unity:'', description:'', type:'' };
   }
 
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value});
   }
-  
 
   componentWillReceiveProps(props){
     this.setState({
-      name: props.room.name,
-      description: props.room.description,
-      price_hour: props.room.price_hour,
-      price_month: props.room.price_month,
-      type: props.room.type,
+      name: props.item.name,
+      price: props.item.price,
+      unity: props.item.unity,
+      description: props.item.description,
+      type: props.item.type,
     });
   }
 
 
   sucessCompletionHandler(data, status){
     this.closeModal();
-    this.props.onFinishEditing(data.room);
+    this.props.onFinishEditing(data.item);
   }
 
   errorCompletionHangler(error){
@@ -268,13 +263,13 @@ class ModalEditRooms extends React.Component{
 
   handleSubmit(event) {
     event.preventDefault();
-    editRoomsInfo(
+    editItemsInfo(
       retrieveFromSession(COWORKING).id,
-      this.props.room.id,
+      this.props.item.id,
       this.state.name,
+      this.state.price,
+      this.state.unity,
       this.state.description,
-      this.state.price_hour,
-      this.state.price_month,
       this.state.type,
       retrieveFromSession(PRIVATE_TOKEN),
       this.sucessCompletionHandler,
@@ -282,42 +277,40 @@ class ModalEditRooms extends React.Component{
   }
 
   closeModal(){
-      document.getElementById("modal-rooms-editar").style.display = "none";
+      document.getElementById("modal-items-editar").style.display = "none";
   }
 
   render(){
     return(
-      <div id="modal-rooms-editar" className="modal modal_multi">
+      <div id="modal-items-editar" className="modal modal_multi">
          <div className="modal-content">
            <div className="modal-header">
                <span onClick={this.closeModal} className="close close_multi">&#xea0f;</span>
-               <h2 className="subtitulo">Editar Salas</h2>
+               <h2 className="subtitulo">Editar Item</h2>
            </div>
            <div className="modal-body wrapp">
                    <div className="desc">
-                       <form onSubmit={this.handleSubmit}  className="form">              
+                       <form onSubmit={this.handleSubmit}  className="form">
                            <h3>Nome:</h3>
                            <input name="name" value={this.state.name} type="text" placeholder="Nome" onChange={this.handleChange}/>
+                           <h3>Preço:</h3>
+                           <input name="price"  value={this.state.price} type="text" placeholder="Preço" onChange={this.handleChange}/>
+                           <h3>Unidade:</h3>
+                           <input name="unity"  value={this.state.unity} type="text" placeholder="Unidade" onChange={this.handleChange}/>
                            <h3>Descrição:</h3>
-                           <input name="description" value={this.state.description} type="text" placeholder="Descrição" onChange={this.handleChange}/>
-                           <h3>Preço(hora):</h3>
-                           <input name="price_hour" value={this.state.price_hour} type="text" placeholder="Preço(hora)" onChange={this.handleChange}/>
-                           <h3>Preço(mês):</h3>
-                           <input name="price_month" value={this.state.price_month} type="text" placeholder="Preço(mês)" onChange={this.handleChange}/>
+                           <input name="description"  value={this.state.description} type="text" placeholder="Descrição" onChange={this.handleChange}/>
                            <h3>Tipo:</h3>
-                           <div className="styled-select blue semi-square">   
-                           
-                            <select name="type" value={this.state.type}  onChange={this.handleChange}>
-                              <option value='1'>Exclusivo</option>
-                              <option value='2'>Compartilhado</option>
-                            </select>
-                            
-                          </div>   
+                           <div className="styled-select blue semi-square">  
+                              <select name="type" value={this.state.type}  onChange={this.handleChange}>
+                                  <option value='1' name="type">Consumivel</option>
+                                  <option value='2' name="type">Serviço</option>
+                              </select>
+                           </div>
                        </form>
                        <div className="form-2">
                           <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
                           <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
-                         
+                          
                       </div>
                    </div>
            </div>
@@ -328,7 +321,6 @@ class ModalEditRooms extends React.Component{
   }
 }
 
-
 class ModalDeleteConfirm extends React.Component{
   constructor(props){
     super(props);
@@ -336,25 +328,25 @@ class ModalDeleteConfirm extends React.Component{
     this.handleSubmit = this.handleSubmit.bind(this);
     this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
     this.errorCompletionHangler = this.errorCompletionHangler.bind(this);
-    this.state = {name: '', description:'', price_hour:'', price_month:'', type:''};
+    this.state = {id: '', name:'', price:'', unity:'', description:'', type:'' };
   }
 
   componentWillReceiveProps(props){
 
     this.setState({
-      id: props.room.id,
-      name: props.room.name,
-      description: props.room.description,
-      price_hour: props.room.price_hour,
-      price_month: props.room.price_month,
-      type: props.room.type,
+      id: props.item.id,
+      name: props.item.name,
+      price: props.item.price,
+      unity: props.item.unity,
+      description: props.item.description,
+      type: props.item.type,
     });
   }
 
 
   sucessCompletionHandler(data, status){
     this.closeModal();
-    this.props.onFinishDeleting(this.props.room);
+    this.props.onFinishDeleting(this.props.item);
   }
 
   errorCompletionHangler(error){
@@ -363,7 +355,7 @@ class ModalDeleteConfirm extends React.Component{
 
   handleSubmit(event) {
     event.preventDefault();
-    deleteRoomsInfos(
+    deleteItemsInfos(
       retrieveFromSession(COWORKING).id,
       this.state.id,
       retrieveFromSession(PRIVATE_TOKEN),
@@ -373,19 +365,19 @@ class ModalDeleteConfirm extends React.Component{
 
 
   closeModal(){
-      document.getElementById("modal-rooms-delete").style.display = "none";
+      document.getElementById("modal-items-delete").style.display = "none";
   }
 
   render(){
     return(
-        <div id="modal-rooms-delete" className="modal modal_multi excluir">
+        <div id="modal-items-delete" className="modal modal_multi excluir">
             <div className="modal-content">
               <div className="modal-header">
                   <span onClick={this.closeModal} className="close close_multi">&#xea0f;</span>
                   <h2 className="subtitulo">Excluir</h2>
               </div>
               <div className="modal-body wrapp">
-                      <p>Tem certeza que deseja excluir essa sala?</p>
+                      <p>Tem certeza que deseja excluir esse item?</p>
                       <form action="" className="form-2">
                         <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
                         <button  onClick={this.handleSubmit} className="btn-grande btn-salvar">Confirmar</button>
@@ -397,7 +389,7 @@ class ModalDeleteConfirm extends React.Component{
     );
   }
 }
-class RoomsPage extends React.Component {
+class ItemsPage extends React.Component {
 
 
   constructor(props) {
@@ -440,4 +432,4 @@ class RoomsPage extends React.Component {
 }
 
 
-export default RoomsPage;
+export default ItemsPage;

@@ -148,7 +148,7 @@ class Content extends React.Component{
                   <div className="logotipo col">
                       <h2 className="subtitulo">Logotipo</h2>
                       <p>
-                          <img src={BASE_URL+retrieveFromSession(COWORKING).logo} alt="Logo Coworking" height="50" width="50"/>
+                          <img src={BASE_URL+retrieveFromSession(COWORKING).logo} alt="Logo Coworking" height="50" width="60"/>
                       </p>
                       <form action="">
                           <button className="btn-small btn-cancelar">Apagar</button>
@@ -249,8 +249,9 @@ class ModaAddContact extends React.Component{
                            <input name="email" type="text" placeholder="E-mail" onChange={this.handleChange}/>
                        </form>
                        <div className="form-2">
-                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
                           <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
+                          
                       </div>
                    </div>
            </div>
@@ -329,8 +330,9 @@ class ModalEditContact extends React.Component{
                            <input name="email" value={this.state.email} type="text" placeholder="E-mail" onChange={this.handleChange}/>
                        </form>
                        <div className="form-2">
-                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
                           <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                          <button onClick={this.handleSubmit} className="btn-grande btn-salvar">Salvar</button>
+                          
                       </div>
                    </div>
            </div>
@@ -397,8 +399,9 @@ class ModalDeleteConfirm extends React.Component{
               <div className="modal-body wrapp">
                       <p>Tem certeza que deseja excluir esse contato?</p>
                       <form action="" className="form-2">
-                        <button  onClick={this.handleSubmit} className="btn-grande btn-salvar">Confirmar</button>
                         <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
+                        <button  onClick={this.handleSubmit} className="btn-grande btn-salvar">Confirmar</button>
+                        
                      </form>
               </div>
             </div>

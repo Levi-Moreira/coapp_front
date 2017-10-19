@@ -23,11 +23,11 @@ export class SlideMenu extends React.Component{
                 <a href="" className="btn-close" onClick={this.closeSlideMenu}><span>&#xea0f;</span></a>
                 <a href="home" className="active"><span>&#xe900;</span>MENU</a>
                 <a href="config"><span>&#xe994;</span>CONFIGURAÇÕES</a>
-                <a href="recursos"><span>&#xe9a8;</span>RECURSOS</a>
-                <a href="salas"><span>&#xe9a8;</span>SALAS</a>
-                <a href="planos"><span>&#xe90e;</span>PLANOS</a>
                 <a href="itens"><span>&#xe923;</span>ITENS</a>
-                <a href="agenda"><span>&#xe900;</span>AGENDA</a>
+                <a href="recursos"><span>&#xe9a8;</span>RECURSOS</a>
+                <a href="salas"><span>&#xe903;</span>SALAS</a>                
+                <a href="planos"><span>&#xe90e;</span>PLANOS</a>
+                <a href="agenda"><span>&#xe953;</span>AGENDA</a>
                 <a href="clientes"><span>&#xe972;</span>CLIENTES</a>
             </div>
 

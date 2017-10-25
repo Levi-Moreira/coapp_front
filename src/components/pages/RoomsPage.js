@@ -6,7 +6,7 @@ import history from '../../services/history';
 import '../styles/ResourcesPage.css'
 import '../styles/ConfigPage.css'
 import '../styles/Modals.css'
-import {retrieveRoomsInfos, createNewRoomsInfo, editRoomsInfo, deleteRoomsInfos, retrieveRoomsTypes, BASE_URL} from '../../services/api_acessor'
+import {retrieveRoomsInfos, createNewRoomsInfo, editRoomsInfo, deleteRoomsInfos, BASE_URL} from '../../services/api_acessor'
 
 class Content extends React.Component{
 
@@ -65,7 +65,7 @@ class Content extends React.Component{
 
   editRoomsInfo(info){
       var infos = this.state.rooms_infos.filter(function(value, index, array){
-          return value.id != info.id;
+          return value.id !== info.id;
       });
       infos.push(info);
       this.setState({rooms_infos : infos});
@@ -73,7 +73,7 @@ class Content extends React.Component{
 
     deleteRoomsInfo(info){
         var infos = this.state.rooms_infos.filter(function(value, index, array){
-            return value.id != info.id;
+            return value.id !== info.id;
         });
         this.setState({rooms_infos : infos});
       }
@@ -206,8 +206,7 @@ class ModalAddRooms extends React.Component{
                            <input name="price_hour" type="text" placeholder="Preço(hora)" onChange={this.handleChange}/>
                            <h3>Preço(mês):</h3>
                            <input name="price_month" type="text" placeholder="Preço(mês)" onChange={this.handleChange}/>
-                           <h3>Tipo:</h3>
-                           <input name="type" type="text" placeholder="Preço(mês)" onChange={this.handleChange}/>                          
+                           <h3>Tipo:</h3>                          
                            <div className="styled-select blue semi-square">
                              
                             <select name="type" onChange={this.handleChange}>

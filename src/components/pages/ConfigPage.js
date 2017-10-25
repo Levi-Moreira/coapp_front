@@ -106,7 +106,7 @@ class Content extends React.Component{
 
   editContractInfo(info){
       var infos = this.state.contact_infos.filter(function(value, index, array){
-          return value.id != info.id;
+          return value.id !== info.id;
       });
       infos.push(info);
       this.setState({contact_infos : infos});
@@ -114,7 +114,7 @@ class Content extends React.Component{
 
     deleteContactInfo(info){
         var infos = this.state.contact_infos.filter(function(value, index, array){
-            return value.id != info.id;
+            return value.id !== info.id;
         });
         this.setState({contact_infos : infos});
       }

@@ -370,7 +370,6 @@ export function retrieveRoomsTypes(coworking_id, authentication_token, sucessCom
 
 //Itens functions from ItemsPage
 
-
 export function retrieveItemsInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
   var authOptions = {
      method: 'GET',
@@ -495,3 +494,127 @@ export function retrieveItemsTypes(coworking_id, authentication_token, sucessCom
     });}
 
 //Itens functions from PlansPage
+
+export function retrievePlansInfos(coworking_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+  var authOptions = {
+     method: 'GET',
+     url: API_BASE_URL+'coworkings/'+coworking_id+'/plans',
+     headers: {
+         'Authorization': 'Token '+ authentication_token,
+         'Content-Type': 'application/json'
+     },
+     json: true
+   };
+
+
+   axios(authOptions)
+    .then(function(response){
+      sucessCompletionHandler(response.data, response.status);
+    })
+    .catch(function(error){
+      errorCompletionHangler(error);
+    });}
+export function createNewPlansInfo(coworking_id, name, description, price, [resource_id], [room_id], [quantity_hours], [item_id], [quantity], authentication_token, sucessCompletionHandler, errorCompletionHangler){
+  console.log(authentication_token);
+    var data = { plan : {
+      name: name,
+      description: description,
+      price: price,
+      resources: [{
+        resource: resource_id,
+        quantity_hours: quantity_hours,
+      }],
+      rooms: [{
+        room: room_id,
+        quantity_hours: quantity_hours,
+      }],
+      items: [{
+        item: item_id,
+        quantity: quantity,
+        },
+    ]
+    }};
+
+    var authOptions = {
+       method: 'POST',
+       url: API_BASE_URL+'coworkings/'+coworking_id+'/plans',
+       data: JSON.stringify(data),
+       headers: {
+           'Authorization': 'Token '+authentication_token,
+           'Content-Type': 'application/json'
+       },
+       json: true
+     };
+
+     axios(authOptions)
+      .then(function(response){
+        sucessCompletionHandler(response.data, response.status);
+      })
+      .catch(function(error){
+        errorCompletionHangler(error);
+      });
+  }
+
+export function editPlansInfo(coworking_id, plan_id, name, description, price, [resource_id] ,[room_id], [quantity_hours], [item_id], [quantity], authentication_token, sucessCompletionHandler, errorCompletionHangler){
+
+              var data = {plan : {
+                id : plan_id,
+                name: name,
+                description: description,
+                price: price,
+                resources: [{
+                  resource: resource_id,
+                  quantity_hours: quantity_hours,
+                }],
+                rooms: [{
+                  room: room_id,
+                  quantity_hours: quantity_hours,
+                }],
+                items: [{
+                  item: item_id,
+                  quantity: quantity,
+                  },
+              ]
+              }};
+
+              var authOptions = {
+                 method: 'PATCH',
+                 url: API_BASE_URL+'coworkings/'+coworking_id+'/plans/'+plan_id,
+                 data: JSON.stringify(data),
+                 headers: {
+                     'Authorization': 'Token '+authentication_token,
+                     'Content-Type': 'application/json'
+                 },
+                 json: true
+               };
+
+
+               axios(authOptions)
+                .then(function(response){
+                  sucessCompletionHandler(response.data, response.status);
+                })
+                .catch(function(error){
+                  errorCompletionHangler(error);
+                });
+            }
+
+export function deletePlansInfos(coworking_id, plan_id, authentication_token, sucessCompletionHandler, errorCompletionHangler){
+              var authOptions = {
+                 method: 'DELETE',
+                 url: API_BASE_URL+'coworkings/'+coworking_id+'/plans/'+ plan_id,
+                 headers: {
+                     'Authorization': 'Token '+ authentication_token,
+                     'Content-Type': 'application/json'
+                 },
+                 json: true
+               };
+
+
+               axios(authOptions)
+                .then(function(response){
+                  sucessCompletionHandler(response.data, response.status);
+                })
+                .catch(function(error){
+                  errorCompletionHangler(error);
+                });
+            }

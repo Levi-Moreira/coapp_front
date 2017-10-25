@@ -3,22 +3,20 @@ import {SlideMenu, Navigation} from '../common/Navigation'
 import {retrieveFromSession, removeFromSession} from '../../services/storage_acessor'
 import {PRIVATE_TOKEN, COWORKING, USER} from '../../services/storage_acessor'
 import history from '../../services/history';
-import '../styles/ResourcesPage.css'
 import '../styles/ConfigPage.css'
 import '../styles/Modals.css'
-import {retrieveItemsInfos,createNewItemsInfo, editItemsInfo, deleteItemsInfos, BASE_URL} from '../../services/api_acessor'
-
+import {retrievePlansInfos,createNewPlansInfo, editPlansInfo, deletePlansInfos, BASE_URL} from '../../services/api_acessor'
 
 class Content extends React.Component{
 
   constructor(props) {
       super(props);
-      this.state = {items_infos : null, editing_items_info : { name:"", id:"", price:"", unity:"", description:"", type:"" }, deleting_items_info : { name:"", id:"", price:"", unity:"", description:"", type:"" }}
+      this.state = {plans_infos : null, editing_plans_info : { name:"", description:"", id:"", price:"", resource:"", room:"", quantity_hours:"", item:"", quantity:"" }, deleting_plans_info : { name:"", description:"", id:"", price:"", resource:"", room:"", quantity_hours:"", item:"", quantity:"" }}
       this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
       this.errorCompletionHangler =  this.errorCompletionHangler.bind(this);
-      this.addItemsInfo = this.addItemsInfo.bind(this);
-      this.editItemsInfo=this.editItemsInfo.bind(this);
-      this.deleteItemsInfo = this.deleteItemsInfo.bind(this);
+      this.addPlansInfo = this.addPlansInfo.bind(this);
+      this.editPlansInfo=this.editPlansInfo.bind(this);
+      this.deletePlanssInfo = this.deletePlansInfo.bind(this);
       this.onEdit = this.onEdit.bind(this);
       this.onDelete = this.onDelete.bind(this);
       this.openEditModal = this.openEditModal.bind(this);
@@ -26,21 +24,21 @@ class Content extends React.Component{
   }
 
 
-  openCreateItemsModal(){
-      document.getElementById("modal-create-items").style.display = "block";
+  openCreatePlansModal(){
+      document.getElementById("modal-create-plans").style.display = "block";
   }
 
 
   openEditModal(){
-      document.getElementById("modal-items-editar").style.display = "block";
+      document.getElementById("modal-plans-editar").style.display = "block";
   }
 
   openDeleteModal(){
-      document.getElementById("modal-items-delete").style.display = "block";
+      document.getElementById("modal-plans-delete").style.display = "block";
   }
 
   sucessCompletionHandler(data, status){
-    this.setState({items_infos : data.items});
+    this.setState({plans_infos : data.plans});
   }
 
   errorCompletionHangler(error){
@@ -48,70 +46,67 @@ class Content extends React.Component{
   }
 
   componentDidMount(){
-      retrieveItemsInfos(
+      retrievePlansInfos(
         retrieveFromSession(COWORKING).id,
         retrieveFromSession(PRIVATE_TOKEN),
         this.sucessCompletionHandler,
         this.errorCompletionHangler);
   }
 
-  addItemsInfo(info){
-      var infos = this.state.items_infos;
+  addPlansInfo(info){
+      var infos = this.state.plans_infos;
       infos.push(info);
-      this.setState({items_infos : infos});
+      this.setState({plans_infos : infos});
   }
 
 
-  editItemsInfo(info){
-      var infos = this.state.items_infos.filter(function(value, index, array){
+  editPlansInfo(info){
+      var infos = this.state.plans_infos.filter(function(value, index, array){
           return value.id !== info.id;
       });
       infos.push(info);
-      this.setState({items_infos : infos});
+      this.setState({plans_infos : infos});
     }
 
-  deleteItemsInfo(info){
-        var infos = this.state.items_infos.filter(function(value, index, array){
+    deletePlansInfo(info){
+        var infos = this.state.plans_infos.filter(function(value, index, array){
             return value.id !== info.id;
         });
-        this.setState({items_infos : infos});
+        this.setState({plans_infos : infos});
       }
 
    onEdit(info){
-      this.setState({editing_items_info: info});
+      this.setState({editing_plans_info: info});
       this.openEditModal();
    }
 
    onDelete(info){
-     this.setState({deleting_items_info: info});
+     this.setState({deleting_plans_info: info});
      this.openDeleteModal();
    }
 
   render() {
     var infos = [];
-    if(this.state.items_infos != null){
-      infos = this.state.items_infos;
+    if(this.state.plans_infos != null){
+      infos = this.state.plans_infos;
     }
 
     return (
       <div id="main">
 
-          <ModalAddItems onFinishAdd={this.addItemsInfo}/>
-          <ModalEditItems onFinishEditing={this.editItemsInfo} item={this.state.editing_items_info}/>
-          <ModalDeleteConfirm onFinishDeleting={this.deleteItemsInfo} item={this.state.deleting_items_info}/>
+          <ModalAddPlans onFinishAdd={this.addPlansInfo}/>
+          <ModalEditPlans onFinishEditing={this.editPlansInfo} plan={this.state.editing_plans_info}/>
+          <ModalDeleteConfirm onFinishDeleting={this.deletePlansInfo} plan={this.state.deleting_plans_info}/>
           <div className="wrapper">
               <h1 className="titulo">Painel Administrativo</h1>
-        
-
+             
               <div className="contato cadastro">
-                  <h2 className="subtitulo">Informações de Itens</h2>
+                  <h2 className="subtitulo">Informações de Planos</h2>
                   <div className="table">
                       <div className="th-cadastro">
                           <div className="cell top">Nome</div>
-                          <div className="cell top">Preço</div>
-                          <div className="cell top">Unidade</div>
                           <div className="cell top">Descrição</div>
-                          <div className="cell top">Tipo</div>
+                          <div className="cell top">Preço</div>                         
                           <div className="cell top">Editor</div>
                       </div>
 
@@ -119,10 +114,8 @@ class Content extends React.Component{
                           return (
                             <div key={ info.id } className="row td-cadastro">
                               <div className="cell bottom">{info.name}</div>
-                              <div className="cell bottom">{info.price}</div>
-                              <div className="cell bottom">{info.unity}</div>
                               <div className="cell bottom">{info.description}</div>
-                              <div className="cell bottom">{info.type}</div>
+                              <div className="cell bottom">{info.price}</div>
                               <div className="cell bottom">
                                   <a href="#" onClick={()=>this.onEdit(info)} className=""><span>&#xe905;</span></a>
                                   <a href="#" onClick={()=>this.onDelete(info)}  className=""><span>&#xe9ac;</span></a>
@@ -131,7 +124,7 @@ class Content extends React.Component{
                         );
 
                       }, this)}
-                      <button onClick={this.openCreateItemsModal} className="btn-add">Adicionar Novo Item</button>
+                      <button onClick={this.openCreatePlansModal} className="btn-add">Adicionar Novo Plano</button>
                   </div>
               </div>
           </div>
@@ -140,7 +133,7 @@ class Content extends React.Component{
   }
 }
 
-class ModalAddItems extends React.Component{
+class ModalAddPlans extends React.Component{
   constructor(props){
     super(props);
     this.closeModal = this.closeModal.bind(this);
@@ -148,7 +141,7 @@ class ModalAddItems extends React.Component{
     this.handleChange = this.handleChange.bind(this);
     this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
     this.errorCompletionHangler = this.errorCompletionHangler.bind(this);
-    this.state = { name:'', price:'', unity:'', description:'', type:'' };
+    this.state = {name:'', description:'', price:'', resource:'', room:'', quantity_hours:'', item:'', quantity:''};
   }
 
   handleChange(event) {
@@ -159,7 +152,7 @@ class ModalAddItems extends React.Component{
 
   sucessCompletionHandler(data, status){
     this.closeModal();
-    this.props.onFinishAdd(data.item);
+    this.props.onFinishAdd(data.plan);
   }
 
   errorCompletionHangler(error){
@@ -168,50 +161,70 @@ class ModalAddItems extends React.Component{
 
   handleSubmit(event) {
     event.preventDefault();
-    createNewItemsInfo(
+    createNewPlansInfo(
       retrieveFromSession(COWORKING).id,
       this.state.name,
-      this.state.price,
-      this.state.unity,
       this.state.description,
-      this.state.type,
+      this.state.price,
+      this.state.resource,
+      this.state.room,
+      this.state.quantity_hours,
+      this.state.item,
+      this.state.quantity,
       retrieveFromSession(PRIVATE_TOKEN),
       this.sucessCompletionHandler,
       this.errorCompletionHangler);
   }
-  
 
   closeModal(){
-      document.getElementById("modal-create-items").style.display = "none";
+      document.getElementById("modal-create-plans").style.display = "none";
   }
   render(){
     return(
-      <div id="modal-create-items" className="modal modal_multi">
+      <div id="modal-create-plans" className="modal modal_multi">
          <div className="modal-content">
            <div className="modal-header">
                <span onClick={this.closeModal} className="close close_multi">&#xea0f;</span>
-               <h2 className="subtitulo">Adicionar Item</h2>
+               <h2 className="subtitulo">Adicionar Plano</h2>
            </div>
            <div className="modal-body wrapp">
                    <div className="desc">
                        <form onSubmit={this.handleSubmit}  className="form">
                            <h3>Nome:</h3>
                            <input name="name" type="text" placeholder="Nome" onChange={this.handleChange}/>
-                           <h3>Preço:</h3>
-                           <input name="price" type="text" placeholder="Preço" onChange={this.handleChange}/>
-                           <h3>Unidade:</h3>
-                           <input name="unity" type="text" placeholder="Unidade" onChange={this.handleChange}/>
                            <h3>Descrição:</h3>
                            <input name="description" type="text" placeholder="Descrição" onChange={this.handleChange}/>
-                           <h3>Tipo:</h3>
-                           
+                           <h3>Preço:</h3>
+                           <input name="price" type="text" placeholder="Preço" onChange={this.handleChange}/>
+                           <h3>Recursos:</h3>
+
                            <div className="styled-select blue semi-square">
-                             
-                            <select name="type" onChange={this.handleChange}>
-                              <option value='1' name='type'>Consumivel</option>
-                              <option value='2' name='type'>Serviço</option>
+                            <select name="resource" onChange={this.handleChange}>
+                              <option value='1' name='resource'>Resource 1</option>
+                              <option value='2' name='resource'>Resource 2</option>
                             </select>
                           </div>    
+
+                           <h3>Quantidade de Horas(Recursos):</h3>
+                           <input name="quantity_hours" type="text" placeholder="Quantidade de Horas(Recursos)" onChange={this.handleChange}/>
+                           <h3>Salas:</h3>
+                           <div className="styled-select blue semi-square">    
+                              <select  name="room" onChange={this.handleChange}>
+                                <option value='1' name='room'>Sala 1</option>
+                                <option value='2' name='room'>Sala 2</option>    
+                              </select>                
+                          </div>  
+                           <h3>Quantidade de horas(Salas):</h3>
+                           <input name="quantity_hours" type="text" placeholder="Quantidade de Horas(Salas)" onChange={this.handleChange}/>
+                           <h3>Item:</h3>
+                           <div className="styled-select blue semi-square">    
+                              <select  name="item" onChange={this.handleChange}>
+                                <option value='1' name='item'>Item 1</option>
+                                <option value='1' name='item'>Item 2</option>    
+                              </select>                
+                          </div>  
+                           <h3>Quantidade:</h3>
+                           <input name="quantity" type="text" placeholder="Quantidade Item" onChange={this.handleChange}/>
                        </form>
                        <div className="form-2">
                           <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
@@ -226,7 +239,7 @@ class ModalAddItems extends React.Component{
   }
 }
 
-class ModalEditItems extends React.Component{
+class ModalEditPlans extends React.Component{
   constructor(props){
     super(props);
     this.closeModal = this.closeModal.bind(this);
@@ -234,7 +247,7 @@ class ModalEditItems extends React.Component{
     this.handleChange = this.handleChange.bind(this);
     this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
     this.errorCompletionHangler = this.errorCompletionHangler.bind(this);
-    this.state = { name:'', price:'', unity:'', description:'', type:'' };
+    this.state = {name:'', description:'', price:'', resource:'', room:'', quantity_hours:'', item:'', quantity:''};
   }
 
   handleChange(event) {
@@ -243,18 +256,21 @@ class ModalEditItems extends React.Component{
 
   componentWillReceiveProps(props){
     this.setState({
-      name: props.item.name,
-      price: props.item.price,
-      unity: props.item.unity,
-      description: props.item.description,
-      type: props.item.type,
+      name: props.plan.name,
+      description: props.plan.description,
+      price: props.plan.price,
+      resource: props.plan.resource,
+      room: props.plan.room,
+      quantity_hours: props.plan.quantity_hours,
+      item: props.plan.item,
+      quantity: props.plan.quantity,
     });
   }
 
 
   sucessCompletionHandler(data, status){
     this.closeModal();
-    this.props.onFinishEditing(data.item);
+    this.props.onFinishEditing(data.plan);
   }
 
   errorCompletionHangler(error){
@@ -263,49 +279,55 @@ class ModalEditItems extends React.Component{
 
   handleSubmit(event) {
     event.preventDefault();
-    editItemsInfo(
+    editPlansInfo(
       retrieveFromSession(COWORKING).id,
-      this.props.item.id,
+      this.props.plan.id,
       this.state.name,
-      this.state.price,
-      this.state.unity,
       this.state.description,
-      this.state.type,
+      this.state.price,
+      this.state.resource,
+      this.state.room,
+      this.state.quantity_hours,
+      this.state.item,
+      this.state.quantity,
       retrieveFromSession(PRIVATE_TOKEN),
       this.sucessCompletionHandler,
       this.errorCompletionHangler);
   }
 
   closeModal(){
-      document.getElementById("modal-items-editar").style.display = "none";
+      document.getElementById("modal-plans-editar").style.display = "none";
   }
 
   render(){
     return(
-      <div id="modal-items-editar" className="modal modal_multi">
+      <div id="modal-plans-editar" className="modal modal_multi">
          <div className="modal-content">
            <div className="modal-header">
                <span onClick={this.closeModal} className="close close_multi">&#xea0f;</span>
-               <h2 className="subtitulo">Editar Item</h2>
+               <h2 className="subtitulo">Editar Planos</h2>
            </div>
            <div className="modal-body wrapp">
                    <div className="desc">
                        <form onSubmit={this.handleSubmit}  className="form">
                            <h3>Nome:</h3>
                            <input name="name" value={this.state.name} type="text" placeholder="Nome" onChange={this.handleChange}/>
-                           <h3>Preço:</h3>
-                           <input name="price"  value={this.state.price} type="text" placeholder="Preço" onChange={this.handleChange}/>
-                           <h3>Unidade:</h3>
-                           <input name="unity"  value={this.state.unity} type="text" placeholder="Unidade" onChange={this.handleChange}/>
                            <h3>Descrição:</h3>
-                           <input name="description"  value={this.state.description} type="text" placeholder="Descrição" onChange={this.handleChange}/>
-                           <h3>Tipo:</h3>
-                           <div className="styled-select blue semi-square">  
-                              <select name="type" value={this.state.type}  onChange={this.handleChange}>
-                                  <option value='1' name="type">Consumivel</option>
-                                  <option value='2' name="type">Serviço</option>
-                              </select>
-                           </div>
+                           <input name="description" value={this.state.description} type="text" placeholder="Descrição" onChange={this.handleChange}/>
+                           <h3>Preço:</h3>
+                           <input name="price" value={this.state.price} type="text" placeholder="Preço" onChange={this.handleChange}/>
+                           <h3>Recursos:</h3>
+                           <input name="resource" value={this.state.resource} type="text" placeholder="Recursos" onChange={this.handleChange}/>
+                           <h3>Quantidade de Horas(Recursos):</h3>
+                           <input name="quantity_hours" value={this.state.quantity_hours} type="text" placeholder="Quantidade de Horas(Recursos)" onChange={this.handleChange}/>
+                           <h3>Salas:</h3>
+                           <input name="room" value={this.state.room} type="text" placeholder="Salas" onChange={this.handleChange}/>
+                           <h3>Quantidade de horas(Salas):</h3>
+                           <input name="quantity_hours" value={this.state.quantity_hours} type="text" placeholder="Quantidade de Horas(Recursos)" onChange={this.handleChange}/>
+                           <h3>Item:</h3>
+                           <input name="item" value={this.state.item} type="text" placeholder="Item" onChange={this.handleChange}/>
+                           <h3>Quantidade:</h3>
+                           <input name="quantity" value={this.state.quantity} type="text" placeholder="Item" onChange={this.handleChange}/>
                        </form>
                        <div className="form-2">
                           <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
@@ -328,25 +350,28 @@ class ModalDeleteConfirm extends React.Component{
     this.handleSubmit = this.handleSubmit.bind(this);
     this.sucessCompletionHandler = this.sucessCompletionHandler.bind(this);
     this.errorCompletionHangler = this.errorCompletionHangler.bind(this);
-    this.state = {id: '', name:'', price:'', unity:'', description:'', type:'' };
+    this.state = {name:'', description:'', id:'', price:'', resource_id:'', room_id:'', quantity_hours:'', item_id:'', quantity:''};
   }
 
   componentWillReceiveProps(props){
 
     this.setState({
-      id: props.item.id,
-      name: props.item.name,
-      price: props.item.price,
-      unity: props.item.unity,
-      description: props.item.description,
-      type: props.item.type,
+      id: props.plan.id,
+      name: props.plan.name,
+      description: props.plan.description,
+      price: props.plan.price,
+      resource: props.plan.resource,
+      room: props.plan.room,
+      quantity_hours: props.plan.quantity_hours,
+      item: props.plan.item,
+      quantity: props.plan.quantity,
     });
   }
 
 
   sucessCompletionHandler(data, status){
     this.closeModal();
-    this.props.onFinishDeleting(this.props.item);
+    this.props.onFinishDeleting(this.props.plan);
   }
 
   errorCompletionHangler(error){
@@ -355,7 +380,7 @@ class ModalDeleteConfirm extends React.Component{
 
   handleSubmit(event) {
     event.preventDefault();
-    deleteItemsInfos(
+    deletePlansInfos(
       retrieveFromSession(COWORKING).id,
       this.state.id,
       retrieveFromSession(PRIVATE_TOKEN),
@@ -365,19 +390,19 @@ class ModalDeleteConfirm extends React.Component{
 
 
   closeModal(){
-      document.getElementById("modal-items-delete").style.display = "none";
+      document.getElementById("modal-plans-delete").style.display = "none";
   }
 
   render(){
     return(
-        <div id="modal-items-delete" className="modal modal_multi excluir">
+        <div id="modal-plans-delete" className="modal modal_multi excluir">
             <div className="modal-content">
               <div className="modal-header">
                   <span onClick={this.closeModal} className="close close_multi">&#xea0f;</span>
                   <h2 className="subtitulo">Excluir</h2>
               </div>
               <div className="modal-body wrapp">
-                      <p>Tem certeza que deseja excluir esse item?</p>
+                      <p>Tem certeza que deseja excluir esse plano?</p>
                       <form action="" className="form-2">
                         <button onClick={this.closeModal} className="btn-grande btn-cancelar">Cancelar</button>
                         <button  onClick={this.handleSubmit} className="btn-grande btn-salvar">Confirmar</button>
@@ -389,7 +414,7 @@ class ModalDeleteConfirm extends React.Component{
     );
   }
 }
-class ItemsPage extends React.Component {
+class PlansPage extends React.Component {
 
 
   constructor(props) {
@@ -432,4 +457,4 @@ class ItemsPage extends React.Component {
 }
 
 
-export default ItemsPage;
+export default PlansPage;

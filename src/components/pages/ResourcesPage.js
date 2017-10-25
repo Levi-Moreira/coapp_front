@@ -64,7 +64,7 @@ class Content extends React.Component{
 
   editResourcesInfo(info){
       var infos = this.state.resources_infos.filter(function(value, index, array){
-          return value.id != info.id;
+          return value.id !== info.id;
       });
       infos.push(info);
       this.setState({resources_infos : infos});
@@ -73,7 +73,7 @@ class Content extends React.Component{
     deleteResourcesInfo(info){
      
         var infos = this.state.resources_infos.filter(function(value, index, array){
-            return value.id != info.id;
+            return value.id !== info.id;
         });
         this.setState({resources_infos : infos});
       }
